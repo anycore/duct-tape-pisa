@@ -1,0 +1,69 @@
+\section{Introduction\label{sec:intro}}
+
+Duct Tape (or \emph{dt}) is a new language for 
+writing raw instructions using a 
+pseudo-assembly syntax.  It differs from 
+the GNU assembler, however, by providing 
+several syntatical constructs borrowed from 
+high-level programming languages such as 
+loops and if statements.  The result is a 
+hybrid language that is part assembly and 
+part high-level.
+
+The motivation for such a language was borne out 
+in trying to debug and verify Verilog implementations
+of the PISA instruction set from the FabScalar
+project.  The need to carefully craft instruction
+sequences to either avoid known bugs or to explicitly 
+exercise corner-cases was evident, leading us to 
+write micro-kernels.  Previously, to write micro-kernels, 
+it was required to hand-encode instructions and 
+put the encoded values into the memory using 
+a series of test-bench macros that would write 
+individual memory words. Writing micro-kernels 
+in this manner severely restricts their sophistication.
+The intent of \emph{dt} was to increase the 
+productivity of the micro-kernel programmer 
+while still giving tight control over the emitted 
+code.
+
+The GNU compiler~\cite{fsfgcc} (\emph{gcc}) can be used to 
+write simple programs, but the programmer does not 
+have control over several aspects: the registers 
+that the compiler uses, the memory locations used, 
+the types of instructions emitted, the library 
+code that executes before the programs main() function, 
+the format of the output file, 
+and so on.  The GNU assembler (\emph{gas}) can be used to 
+write instructions using assembly mnemonics, 
+which also would have increased productivity 
+(over hand-encoding instructions).  But of the 
+limitations listed for \emph{gcc} above, \emph{gas}
+only provides the additional control over the
+registers used and types of instructions emitted.  
+
+Contrasting \emph{dt} with \emph{gcc} and \emph{gas}, \emph{dt} allows 
+the programmer very tight control over the emitted code. The
+programmer can write programs strictly using assembly mnemonics, 
+but can also use several high-level language constructs.  The 
+\emph{dt} language allows the programmer to easily give 
+names to registers and memory locations, use assignments and 
+arithmetic/logic operations, use if-statements and while-loops, and 
+can even include data within the program. To keep the 
+instruction-level control over the emitted code, the high-level constructs
+all result in specific instructions whose use is always the same.
+
+The output of \emph{dt} can be either a checkpoint that can 
+be used directly by the functional simulator of the 
+FabScalar core testbench, or it can be plain-text files that 
+can be read by the readmemh function 
+of Verilog for the scratchpad memories of the debug FabScalar core.  
+These benefits should drastically increase the 
+productivity of the micro-kernel programmer and should also 
+help in tracking down rare or specific RTL bugs.
+
+The remainder of this paper covers many aspects of the \emph{dt}
+toolchain and language.  This document can serve as a 
+reference for the syntax and the exact code that will be 
+emitted for each of the high-level language constructs.
+

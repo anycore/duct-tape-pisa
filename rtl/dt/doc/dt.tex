@@ -1,0 +1,295 @@
+%% lupdupe.tex
+%% LupDupe -- A Bayesian Probabilistic Approach to Assembly Language Copy Detection
+%% Elliott Forbes, and ... maybe Will if he's up to it, Dr. B?
+%% North Carolina State University
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Based on original bare_jrnl_compsoc.tex
+%% V1.3
+%% 2007/01/11
+%% by Michael Shell
+%% See:
+%% http://www.michaelshell.org/
+%% for current contact information.
+%%
+%% Legal Notice:
+%% This code is offered as-is without any warranty either expressed or
+%% implied; without even the implied warranty of MERCHANTABILITY or
+%% FITNESS FOR A PARTICULAR PURPOSE! 
+%% User assumes all risk.
+%% In no event shall IEEE or any contributor to this code be liable for
+%% any damages or losses, including, but not limited to, incidental,
+%% consequential, or any other damages, resulting from the use or misuse
+%% of any information contained here.
+%%
+%% All comments are the opinions of their respective authors and are not
+%% necessarily endorsed by the IEEE.
+%%
+%% This work is distributed under the LaTeX Project Public License (LPPL)
+%% ( http://www.latex-project.org/ ) version 1.3, and may be freely used,
+%% distributed and modified. A copy of the LPPL, version 1.3, is included
+%% in the base LaTeX documentation of all distributions of LaTeX released
+%% 2003/12/01 or later.
+%% Retain all contribution notices and credits.
+%% ** Modified files should be clearly indicated as such, including  **
+%% ** renaming them and changing author support contact information. **
+%%
+%%*************************************************************************
+
+
+
+% Only one of the following should be uncommented, one is for
+% submission, the other is for camera-ready.  Change 'draft' to 
+% 'draftcls' or 'draftclsnofoot' to show figures (figures lengthen
+% compile time).
+%
+
+%\documentclass[11pt,draft,letterpaper,compsoc,onecolumn,peerreview]{IEEEtran}
+\documentclass[10pt,conference,twocolumn,letterpaper]{IEEEtran}
+
+
+\usepackage[nocompress]{cite}
+\usepackage{graphicx}
+\usepackage{multirow}
+
+
+
+% Some useful LaTeX packages to include:
+% (uncomment the ones you want to load)
+
+
+% *** MATH PACKAGES ***
+%
+%\usepackage[cmex10]{amsmath}
+% A popular package from the American Mathematical Society that provides
+% many useful and powerful commands for dealing with mathematics.
+
+
+% *** SPECIALIZED LIST PACKAGES ***
+%
+%\usepackage{algorithmic}
+% This package provides an algorithmic environment fo describing algorithms.
+
+
+% *** ALIGNMENT PACKAGES ***
+%
+\usepackage{array}
+% patches and improves the standard LaTeX2e array and tabular 
+% environments to provide better appearance and additional user controls.
+
+
+%\usepackage{mdwmath}
+%\usepackage{mdwtab}
+% Extremely powerful MDW tools, which are used to format equations
+% and tables.
+
+
+%\usepackage{eqparbox}
+% Package for creating (automatically sized) equal width boxes 
+% - aka "natural width parboxes".
+% Available at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/eqparbox/
+
+
+
+% *** SUBFIGURE PACKAGES ***
+\usepackage[tight,normalsize,sf,SF]{subfigure}
+%\usepackage[tight,footnotesize]{subfigure}
+% This package makes it easy to put subfigures in your figures. 
+% e.g., "Figure 1a and 1b".
+
+
+%  \usepackage[caption=false]{caption}
+%  \usepackage[font=normalsize,labelfont=sf,textfont=sf]{subfig}
+%  \usepackage[font=footnotesize]{subfig}
+%  \usepackage[caption=false,font=normalsize,labelfont=sf,textfont=sf]{subfig}
+%  \usepackage[caption=false,font=footnotesize]{subfig}
+% Modern replacement for subfigure.
+
+
+% *** FLOAT PACKAGES ***
+%
+\usepackage{fixltx2e}
+% This package corrects a few problems
+% in the LaTeX2e kernel, the most notable of which is that in current
+% LaTeX2e releases, the ordering of single and double column floats is not
+% guaranteed to be preserved. Thus, an unpatched LaTeX2e can allow a
+% single column figure to be placed prior to an earlier double column
+% figure.
+
+% give a neat-o box for code listings
+\usepackage{listings}
+
+
+%\usepackage{stfloats}
+% This package gives LaTeX2e
+% the ability to do double column floats at the bottom of the page as well
+% as the top.
+
+
+
+% *** PDF, URL AND HYPERLINK PACKAGES ***
+%
+%\usepackage{url}
+% Provides better support for handling and breaking URLs.
+% Example: \url{my_url_here}.
+
+
+% correct bad hyphenation here
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+\begin{document}
+\bstctlcite{ctrl_dashed_names}
+%
+% paper title
+% can use linebreaks \\ within to get better formatting as desired
+\title{DT: A high-level pseudo-assembler for PISA}
+
+
+% author names and IEEE memberships if necessary
+% use \thanks{} to gain access to the first footnote area
+%
+% \IEEEcompsocitemizethanks is a special \thanks that produces the bulleted
+% lists
+
+%\author{First~Author,~\IEEEmembership{Member,~IEEE,}
+%        Second~Author,~\IEEEmembership{Member,~IEEE,}
+%        and~Last~Author,~\IEEEmembership{Member,~IEEE}% <-this % stops a space
+%\IEEEcompsocitemizethanks{
+%    \IEEEcompsocthanksitem Bulleted list of thanks.\protect\\
+%see http://www.michaelshell.org/contact.html
+%\IEEEcompsocthanksitem Another thanks.}% <-this % stops a space
+%\thanks{}}
+
+\ifCLASSOPTIONpeerreview
+%\author{First~Author and Second~Author\\Affiliation\\Physical~Address\\
+%    \{author1, author2\}@affiliation.com}
+\else
+\author{Elliott~Forbes\\Department of Electrical
+        and Computer Engineering\\North Carolina State University\\
+        jeforbe2@ece.ncsu.edu}%
+%\author{Elliott~Forbes
+%        and~Eric~Rotenberg\\Department of Electrical
+%        and Computer Engineering\\North Carolina State University\\
+%        \{mjdechen, jeforbe2, ericro\}@ece.ncsu.edu}%
+\fi
+
+% The paper headers
+%\markboth{Journal of \LaTeX\ Class Files,~Vol.~6, No.~1, January~2007}%
+%{Shell \MakeLowercase{\textit{et al.}}: Bare Demo of IEEEtran.cls for Computer Society Journals}
+% The only time the second header will appear is for the odd numbered pages
+% after the title page when using the twoside option.
+% 
+
+
+
+% The publisher's ID mark
+%\IEEEpubid{0000--0000/00\$00.00~\copyright~2007 IEEE}
+% or like this to get the Computer Society new two part style.
+%\IEEEpubid{\makebox[\columnwidth]{\hfill 0000--0000/00/\$00.00~\copyright~2007 IEEE}%
+%\hspace{\columnsep}\makebox[\columnwidth]{Published by the IEEE Computer Society\hfill}}
+
+
+% use for special paper notices
+%\IEEEspecialpapernotice{(Invited Paper)}
+
+
+
+\IEEEcompsoctitleabstractindextext{%
+
+\input{abstract}
+
+
+\ifCLASSOPTIONpeerreview
+\else
+\begin{IEEEkeywords}
+Compiler, assembly and high-level language hybrid, language reference, command-line options.
+\end{IEEEkeywords}
+\fi
+}
+
+% make the title area
+\maketitle
+
+
+\IEEEdisplaynotcompsoctitleabstractindextext
+
+\input{intro}
+\input{language}
+\input{usage}
+\input{conc}
+
+
+%\subsubsection{Subsubsection Heading Here}
+%Subsubsection text here.
+
+
+%\begin{figure}[!t]
+%\centering
+%\includegraphics[width=2.5in]{myfigure}
+%\caption{Simulation Results}
+%\label{fig_sim}
+%\end{figure}
+
+%
+%\begin{figure*}[!t]
+%\centerline{\subfloat[Case I]\includegraphics[width=2.5in]{subfigcase1}%
+%\label{fig_first_case}}
+%\hfil
+%\subfloat[Case II]{\includegraphics[width=2.5in]{subfigcase2}%
+%\label{fig_second_case}}}
+%\caption{Simulation results}
+%\label{fig_sim}
+%\end{figure*}
+%
+
+%
+%\begin{table}[!t]
+%% increase table row spacing, adjust to taste
+%\renewcommand{\arraystretch}{1.3}
+%\caption{An Example of a Table}
+%\label{table_example}
+%\centering
+%\begin{tabular}{|c||c|}
+%\hline
+%One & Two\\
+%\hline
+%Three & Four\\
+%\hline
+%\end{tabular}
+%\end{table}
+
+
+% use section* for acknowledgement
+%\section*{Acknowledgments}
+%The authors would like to thank...
+
+
+
+
+\bibliographystyle{IEEEtranS}
+% 1.6 is double spaced
+%\linespread{1.6}
+\linespread{1.0}
+\bibliography{dt}
+
+
+%\begin{IEEEbiography}{Michael Shell}
+%Biography text here.
+%\end{IEEEbiography}
+
+% if you will not have a photo at all:
+%\begin{IEEEbiographynophoto}{John Doe}
+%Biography text here.
+%\end{IEEEbiographynophoto}
+
+% insert where needed to balance the two columns on the last page with
+% biographies
+%\newpage
+
+%\begin{IEEEbiographynophoto}{Jane Doe}
+%Biography text here.
+%\end{IEEEbiographynophoto}
+
+\end{document}
+
+

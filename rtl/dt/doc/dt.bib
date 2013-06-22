@@ -1,0 +1,803 @@
+%NOTES: 
+%     - give unique names to each citation (usually the last name of the first author and the two digit year)
+%     - for the title only you have to use {} brackets to capitalize words - except the first word
+%     - in the author list, 'and' is a keyword, so don't use commas... always use 'and'
+%     - before you add a paper, search this file thoroughly to make sure it's not already in here
+%     - fill in all fields, otherwise this is useless!!
+
+@IEEEtranBSTCTL{ctrl_dashed_names,
+  CTLdash_repeated_names    = "no"
+}
+
+% example tech report
+%@TECHREPORT{citationname,
+    author = {J. Doe and J. Doe},
+    title = {The {T}itle of the {T}ech {R}eport},
+    institution = {The Department, The University},
+    number = {ABC123},
+    year = {1966}
+}
+
+% example workshop paper
+%@INPROCEEDINGS{citationname,
+    author = {J. Doe and J. Doe and J. Doe},
+    title = {The {T}itle of the {W}orkshop {P}aper},
+    booktitle = {Proceedings of Workshop on Stuff (held in conjunction with the Nth Annual International Symposium on Big Deals)},
+    year = {January 1966}
+}
+
+% example conference paper
+%@INPROCEEDINGS{citationname,
+    author = {J. Doe and J. Doe and J. Doe},
+    title = {The {T}itle of the {P}aper},
+    booktitle = {Proceedings of the Nth Annual International Symposium on Big Deals},
+    year = {January 1966},
+    pages = {1--10}
+}
+
+% example journal paper
+%@ARTICLE{citationname,
+    author = {J. Doe},
+    title = {The {T}itle of the {J}ournal {P}aper},
+    journal = {Name of Journal},
+    year = {January 1966},
+    volume = {10},
+    number = {1},
+    pages = {1--11}
+}
+
+@inproceedings{fsfgcc,
+ title = {{Using the GNU Compiler Collection}},
+ type = {Manual},
+ year = {2013},
+ affiliation = {Free Software Foundation, Inc.},
+ url = {http://gcc.gnu.org/onlinedocs/gcc-4.8.1/gcc/}
+}
+
+@INPROCEEDINGS{sha06,
+    author = {T. Sha and M. Martin and A. Roth},
+    title = {No{SQ}: {S}tore-{L}oad {C}ommunication without a {S}tore {Q}ueue},
+    booktitle = {Proceedings of the 39th Annual International Symposium on Microarchitecture},
+    year = {December 2006},
+    pages = {285--296}
+}
+
+@INPROCEEDINGS{petric02,
+    author = {V. Petric and A. Bracy and A. Roth},
+    title = {Three {E}xtensions to {R}egister {I}ntegration},
+    booktitle = {Proceedings of the 35rd Annual International Symposium on Microarchitecture},
+    year = {November 2002},
+    pages = {37--47}
+}
+
+@INPROCEEDINGS{roth00,
+    author = {A. Roth and G. Sohi},
+    title = {Register {I}ntegration: {A} {S}imple and {E}fficient {I}mplementation of {S}quash {R}euse},
+    booktitle = {Proceedings of the 33rd Annual International Symposium on Microarchitecture},
+    year = {December 2000},
+    pages = {223--234}
+}
+
+@INPROCEEDINGS{citron98,
+    author = {D. Citron and D. Feitelson and L. Rudolph},
+    title = {Accelerating {M}ulti-{M}edia {P}rocessing by {I}mplementing {M}emoing in {M}ultiplication and {D}ivision {U}nits},
+    booktitle = {Proceedings of the 8th International Conference on Architectural Support for Programming Languages and Operating Systems},
+    year = {October 1998},
+    pages = {252--261}
+}
+
+@INPROCEEDINGS{jourdan98,
+    author = {S. Jourdan and R. Ronen and M. Bekerman and B. Shomar and A. Yoaz},
+    title = {A {N}ovel {R}enaming {S}cheme to {E}xploit {V}alue {T}emporal {L}ocality through {P}hysical {R}egister {R}euse and {U}nification},
+    booktitle = {Proceedings of the 30th Annual International Symposium on Microarchitecture},
+    year = {December 1998},
+    pages = {216--225}
+}
+
+@ARTICLE{moshovos99,
+    author = {A. Moshovos and G. Sohi},
+    title = {Speculative {M}emory {C}loaking and {B}ypassing},
+    journal = {International Journal of Parallel Programming},
+    year = {December 1999},
+    volume = {27},
+    number = {6},
+    pages = {427--456}
+}
+
+@INPROCEEDINGS{molina99,
+    author = {C. Molina and A. Gonz\'{a}lez and J. Tubella},
+    title = {Dynamic {R}emoval of {R}edundant {C}omputations},
+    booktitle = {Proceedings of the 13th International Conference on Supercomputing},
+    year = {June 1999},
+    pages = {474--481}
+}
+
+@UNPUBLISHED{specweb09,
+   title = {S{PEC} {WEB}2009 {B}enchmark {S}uite},
+   URL = {http://www.spec.org/web2009/},
+   year = 2009
+}
+
+@UNPUBLISHED{tpc10,
+   title = {T{PC} {B}enchmark {S}uite},
+   URL = {http://www.tpc.org/},
+   year = 2010
+}
+
+@ARTICLE{koufaty03,
+    author = {D. Koufaty and D. Marr},
+    title = {Hyperthreading {T}echnology in the {N}etburst {M}icroarchitecture},
+    journal = {IEEE Micro},
+    year = {March 2003},
+    volume = {23},
+    number = {2},
+    pages = {56--65}
+}
+
+@ARTICLE{chaudhry09,
+    author = {S. Chaudhry and R. Cypher and M. Ekman and M. Karlsson and A. Landin and S. Yip and H. Zeffer and M. Tremblay},
+    title = {Rock: {A} {H}igh-{P}erformance {SPARC} {CMT} {P}rocessor},
+    journal = {IEEE Micro},
+    year = {March 2009},
+    volume = {29},
+    number = {2},
+    pages = {6--16}
+}
+
+@ARTICLE{seiler08,
+    author = {L. Seiler and D. Carmean and E. Sprangle and T. Forsyth and M. Abrash and P. Dubey and S. Junkins and A. Lake and J. Sugerman and R. Cavin and R. Espasa and E. Grochowski and T. Juan and P. Hanrahan},
+    title = {Larrabee: {A} {M}any-{C}ore x86 {A}rchitecture for {V}isual {C}omputing},
+    journal = {ACM Transactions on Graphics, ACM SIGGRAPH},
+    year = {August 2008},
+    volume = {27},
+    number = {3},
+    pages = {18:1--18:15}
+}
+
+@INPROCEEDINGS{barrah06,
+    author = {J. Barreh and J. Brooks and R. Golla and G. Grohoski and R. Hetherington and P. Jordan and M. Luttrell and C. Olson and M. Shah},
+    title = {Niagara-2: {A} {H}ighly {T}hreaded {S}erver-on-a-{C}hip},
+    booktitle = {Proceedings of the 18th Annual Hot Chips Symposium},
+    year = {August 2006}
+}
+@ARTICLE{kongetira05,
+    author = {P. Kongetira and K. Aingaran and K. Olukotun},
+    title = {Niagara: {A} 32-{W}ay {M}ultithreaded {SPARC} {P}rocessor},
+    journal = {IEEE Micro},
+    year = {March 2005},
+    volume = {25},
+    number = {2},
+    pages = {21--29}
+}
+
+@INPROCEEDINGS{stine07,
+    author = {J. Stine and I. Castellanos and M. Wood and J. Henson and F. Love and W. R. Davis and P. Franzon and M. Bucher and S. Basavarajaiah and J. Oh and R. Jenkal},
+    title = {Free{PDK}: {A}n {O}pen-{S}ource {V}ariation-{A}ware {D}esign {K}it},
+    booktitle = {Proceedings of the IEEE International Conference on Microelectronic Systems Education},
+    year = {June 2007},
+    pages = {173--174}
+}
+
+@TECHREPORT{muralimanohar09,
+    author = {N. Muralimanohar and R. Balasubramonian and N. Jouppi},
+    title = {C{ACTI} 6.0: {A} {T}ool to {M}odel {L}arge {C}aches},
+    institution = {HP Laboratories},
+    number = {HPL-2009-85},
+    year = {2009}
+}
+
+@INPROCEEDINGS{brooks00,
+    author = {D. Brooks and V. Tiwari and M. Martonosi},
+    title = {Wattch: {A} {F}ramework for {A}rchitectural-{L}evel {P}ower {A}nalysis and {O}ptimizations},
+    booktitle = {Proceedings of the 27th Annual International Symposium on Computer Architecture},
+    year = {June 2000},
+    pages = {83--94}
+}
+
+@INPROCEEDINGS{li09,
+    author = {S. Li and J. Ahn and R. Strong and J. Brockman and D. Tullsen and N. Jouppi},
+    title = {Mc{PAT}: {A}n {I}ntegrated {P}ower, {A}rea, and {T}iming {M}odeling {F}ramework for {M}ulticore and {M}anycore {A}rchitectures},
+    booktitle = {Proceedings of the 42nd Annual International Symposium on Microarchitecture},
+    year = {December 2009},
+    pages = {469--480}
+}
+
+@INPROCEEDINGS{sassone07,
+    author = {P. Sassone and J. Rupley II and E. Brekelbaum and G. Loh and B. Black},
+    title = {Matrix {S}cheduler {R}eloaded},
+    booktitle = {Proceedings of the 34th Annual International Symposium on Computer Architecture},
+    year = {June 2007},
+    pages = {335--346}
+}
+
+@INPROCEEDINGS{collange09,
+    author = {S. Collange, D. Defour, Y. Zhang},
+    title = {Dynamic {D}etection of {U}niform and {A}ffine {V}ectors in {GPGPU} {C}omputations},
+    booktitle = {Proceedings of the Workshop on Highly Parallel Processing on a Chip (held in conjunction with the 16th International European Conference on Parallel and Distributed Computing)},
+    year = {August 2009}
+}
+
+@ARTICLE{lindholm08,
+    author = {E. Lindholm and J. Nickolls and S. Oberman and J. Montrym},
+    title = {N{VIDIA} {T}esla: {A} {U}nified {G}raphics and {C}omputing {A}rchitecture},
+    journal = {IEEE Micro},
+    year = {March 2008},
+    volume = {28},
+    number = {2},
+    pages = {39--55}
+}
+
+@ARTICLE{montrym05,
+    author = {J. Montrym and H. Moreton},
+    title = {The {G}e{F}orce 6800},
+    journal = {IEEE Micro},
+    year = {March 2005},
+    volume = {25},
+    number = {2},
+    pages = {41--51}
+}
+
+
+@INPROCEEDINGS{ipek07,
+    author = {E. \.{I}pek and M. Kirman and N. Kirman and J. Mart\'{i}nez},
+    title = {Core {F}usion: {A}ccommodating {S}oftware {D}iversity in {C}hip {M}ultiprocessors},
+    booktitle = {Proceedings of the 34th Annual International Symposium on Computer Architecture},
+    year = {June 2007},
+    pages = {186--197}
+}
+
+
+@INPROCEEDINGS{zhou05,
+    author = {H. Zhou},
+    title = {Dual-{C}ore {E}xecution: {B}uilding a {H}ighly {S}calable {S}ingle-{T}hread {I}nstruction {W}indow},
+    booktitle = {Proceedings of the 14th Annual International Conference on Parallel Architectures and Compilation Techniques},
+    year = {September 2005},
+    pages = {231--242}
+}
+
+@INPROCEEDINGS{woo95,
+    author = {S. Woo and M. Ohara and E. Torrie and J. Singh and A. Gupta},
+    title = {The {SPLASH}-2 {P}rograms: {C}haracterization and {M}ethodological {C}onsiderations},
+    booktitle = {Proceedings of the 22nd Annual International Symposium on Computer Architecture},
+    year = {June 1995},
+    pages = {24--36}
+}
+
+@INPROCEEDINGS{wang08,
+    author = {H. Wang and I. Koren and C. Krishna},
+    title = {An {A}daptive {R}esource {P}artitioning {A}lgorithm in {SMT} {P}rocessors},
+    booktitle = {Proceedings of the 17th Annual International Conference on Parallel Architectures and Compilation Techniques},
+    year = {October 2008},
+    pages = {230--239}
+}
+
+@INPROCEEDINGS{tullsen95,
+    author = {D. Tullsen and S. Eggers and H. Levy},
+    title = {Simultaneous {M}ultithreading: {M}aximizing {O}n-{C}hip {P}arallelism},
+    booktitle = {Proceedings of the 22nd Annual International Symposium on Computer Architecture},
+    year = {June 1995},
+    pages = {392--403}
+}
+
+@INPROCEEDINGS{tullsen96,
+    author = {D. Tullsen and S. Eggers and J. Emer and H. Levy and J. Lo and R. Stamm},
+    title = {Exploiting {C}hoice: {I}nstruction {F}etch and {I}ssue on an {I}mplementable {S}imultaneous {M}ultithreading {P}rocessor},
+    booktitle = {Proceedings of the 23rd Annual International Symposium on Computer Architecture},
+    year = {May 1996},
+    pages = {191--202}
+}
+
+@INPROCEEDINGS{sundaramoorthy00,
+    author = {K. Sundaramoorthy and Z. Purser and E. Rotenberg},
+    title = {Slipstream {P}rocessors: {I}mproving both {P}erformance and {F}ault {T}olerance},
+    booktitle = {Proceedings of the 9th International Conference on Architectural Support for Programming Languages and Operating Systems},
+    year = {November 2000},
+    pages = {257--268}
+}
+
+@INPROCEEDINGS{snavely00,
+    author = {A. Snavely and D. Tullsen},
+    title = {Symbiotic {J}obscheduling for a {S}imultaneous {M}ultithreading {P}rocessor},
+    booktitle = {Proceedings of the 9th International Conference on Architectural Support for Programming Languages and Operating Systems},
+    year = {November 2000},
+    pages = {234--244}
+}
+
+@INPROCEEDINGS{ramsay03,
+    author = {M. Ramsay and C. Feucht and M. Lipasti},
+    title = {Exploring {E}fficient {SMT} {B}ranch {P}redictor {D}esign},
+    booktitle = {Workshop on Complexity Effective Design (held in conjunction with the 30th Annual International Symposium on Computer Architecture)},
+    year = {June 2003}
+}
+
+@INPROCEEDINGS{raasch03,
+    author = {S. Raasch and S. Reinhardt},
+    title = {The {I}mpact of {R}esource {P}artitioning on {SMT} {P}rocessors},
+    booktitle = {Proceedings of the 12th Annual International Conference on Parallel Architectures and Compilation Techniques},
+    year = {September 2003},
+    pages = {15--25}
+}
+
+@INPROCEEDINGS{kumar04,
+    author = {R. Kumar and N. Jouppi and D. Tullsen},
+    title = {Conjoined-core {C}hip {M}ultiprocessing},
+    booktitle = {Proceedings of the 37th Annual ACM/IEEE International Symposium on Microarchitecture},
+    year = {December 2004},
+    pages = {195--206}
+}
+
+@INPROCEEDINGS{hily96,
+    author = {S. Hily and A. Seznec},
+    title = {Branch {P}rediction and {S}imultaneous {M}ultithreading},
+    booktitle = {Proceedings of the 5th Annual International Conference on Parallel Architectures and Compilation Techniques},
+    year = {October 1996},
+    pages = {169--173}
+}
+
+@INPROCEEDINGS{gautier07,
+    author = {T. Gautier and X. Besseron and L. Pigeon},
+    title = {K{AAPI}: {A} {T}hread {S}cheduling {R}untime {S}ystem for {D}ata {F}low {C}omputations on {C}luster of {M}ulti-processors},
+    booktitle = {Proceedings of International Workshop on Parallel Symbolic Computation (held in conjunction with the 20th Annual International Symposium on Symbolic and Algebraic Computation)},
+    year = {July 2007},
+    pages = {15--23}
+}
+
+@INPROCEEDINGS{curtismaury05,
+    author = {M. Curtis-Maury and T. Wang and C. Antonopoulos and D. Nikolopoulos},
+    title = {Integrating {M}ultiple {F}orms of {M}ultithreaded {E}xecution on {M}ulti-{SMT} {S}ystems: {A} {S}tudy with {S}cientific {A}pplications},
+    booktitle = {Proceedings of the 2nd International Conference on the Quantitative Evaluation of Systems},
+    year = {September 2005},
+    pages = {199--208}
+}
+
+@INPROCEEDINGS{chen07,
+    author = {S. Chen and P. Gibbons and M. Kozuch and V. Liaskovitis and A. Ailamaki and G. Blelloch and B. Falsafi and L. Fix and N. Hardavellas and T. Mowry and C. Wilkerson},
+    title = {Scheduling {T}hreads for {C}onstructive {C}ache {S}haring on {CMP}s},
+    booktitle = {Proceedings of the 19th Annual ACM Symposium on Parallelism in Algorithms and Architectures},
+    year = {June 2007},
+    pages = {105--115}
+}
+
+@INPROCEEDINGS{biswas09,
+    author = {S. Biswas and D. Franklin and A. Savage and R. Dixon and T. Sherwood and F. Chong},
+    title = {Multi-{E}xecution: {M}ulticore {C}aching for {D}ata-{S}imilar {E}xecutions},
+    booktitle = {Proceedings of the 36th Annual International Symposium on Computer Architecture},
+    year = {June 2009},
+    pages = {164--173}
+}
+
+@INPROCEEDINGS{bienia08,
+    author = {C. Bienia and S. Kumar and J. Singh and K. Li},
+    title = {The {PARSEC} {B}enchmark {S}uite: {C}haracterization and {A}rchitectural {I}mplications},
+    booktitle = {Proceedings of the 17th Annual International Conference on Parallel Architectures and Compilation Techniques},
+    year = {October 2008},
+    pages = {72--81}
+}
+
+@TECHREPORT{burger97,
+    author = {D. Burger and T. Austin},
+    title = {The {S}implescalar {T}ool {S}et, {V}ersion 2.0},
+    institution = {Computer Sciences Department, University of Wisconsin - Madison},
+    number = {TR1342},
+    year = {1997}
+}
+
+@INPROCEEDINGS{ahuja01,
+    author = {P. Ahuja and J. Emer and A. Klauser and S. Mukherjee},
+    title = {Performance {P}otential of {E}ffective {A}ddress {P}rediction of {L}oad {I}nstructions},
+    booktitle = {Proceedings of Workshop on Memory Performance Issues (held in conjunction with the 28th Annual International Symposium on Computer Architecture)},
+    year = {June 2001}
+}
+
+@INPROCEEDINGS{austin95,
+    author = {T. Austin and D. Pnevmatikatos and G. Sohi},
+    title = {Streamlining {D}ata {C}ache {A}ccess with {F}ast {A}ddress {C}alculation},
+    booktitle = {Proceedings of the 22nd Annual International Symposium on Computer Architecture)},
+    year = {June 1995},
+    pages = {369--380}
+}
+
+@INPROCEEDINGS{austin95z,
+    author = {T. Austin and G. Sohi},
+    title = {Zero-{C}ycle {L}oads: {M}icroarchitecture {S}upport for {R}educing {L}oad {L}atency},
+    booktitle = {Proceedings of the 28th Annual International ACM/IEEE Symposium on Microarchitecture},
+    year = {November 1995},
+    pages = {82--92}
+}
+
+@INPROCEEDINGS{bekerman99,
+    author = {M. Bekerman and S. Jourdan and R. Ronen and G. Kirshenboim and L. Rappoport and A. Yoaz and U. Weiser},
+    title = {Correlated {L}oad-{A}ddress {P}redictors},
+    booktitle = {Proceedings of the 26th Annual International Symposium on Computer Architecture},
+    year = {May 1999},
+    pages = {54--63}
+}
+
+@INPROCEEDINGS{bekerman00,
+    author = {M. Bekerman and A. Yoaz and F. Gabbay and S. Jourdan and M. Kalaev and R. Ronen},
+    title = {Early {L}oad {A}ddress {R}esolution via {R}egister {T}racking},
+    booktitle = {Proceedings of the 27th Annual International Symposium on Computer Architecture},
+    year = {June 2000},
+    pages = {306--315}
+}
+
+@INPROCEEDINGS{chung01,
+    author = {B. Chung and J. Zhang and J. Peir and S. Lai and K. Lai},
+    title = {Direct {L}oad: {D}ependence-{L}inked {D}ataflow {R}esolution of {L}oad {A}ddress {C}ache {C}oordinate},
+    booktitle = {Proceedings of the 34th Annual ACM/IEEE International Symposium on Microarchitecture},
+    year = {December 2001},
+    pages = {76--87}
+}
+
+@ARTICLE{eickenmeyer93,
+    author = {R. Eickenmeyer and S. Vassiliadis},
+    title = {A {L}oad-{I}nstruction {U}nit for {P}ipelined {P}rocessors},
+    journal = {IBM Journal of Research and Development},
+    year = {July 1993},
+    volume = {37},
+    number = {4},
+    pages = {547--564}
+}
+
+@TECHREPORT{golden93,
+    author = {M. Golden and T. Mudge},
+    title = {Hardware {S}upport for {H}iding {C}ache {L}atency},
+    institution = {Department of Electrical Engineering and Computer Science, University of Michigan},
+    number = {Cse-tr-152-93},
+    year = {February 1993}
+}
+
+@INPROCEEDINGS{gonzalez97,
+    author = {J. Gonz\'{a}lez and A. Gonz\'{a}lez},
+    title = {Speculative {E}xecution via {A}ddress {P}rediction and {D}ata {P}refetching},
+    booktitle = {Proceedings of the 11th Annual International Conference on Supercomputing},
+    year = {July 1997},
+    pages = {196--203}
+}
+
+@INPROCEEDINGS{gonzalez97m,
+    author = {J. Gonz\'{a}lez and A. Gonz\'{a}lez},
+    title = {Memory {A}ddress {P}rediction for {D}ata {S}peculation},
+    booktitle = {Proceedings of the 3rd Annual International Euro-Par Conference on Parallel Processing},
+    year = {August 1997},
+    pages = {1084--1091}
+}
+
+@INPROCEEDINGS{karlsson00,
+    author = {M. Karlsson and F. Dahlgren and P. Stenstr\"{o}m},
+    title = {A {P}refetching {T}echnique for {I}rregular {A}ccesses to {L}inked {D}ata {S}tructures},
+    booktitle = {Proceedings of the 6th Annual International Symposium on High-Performance Computer Architecture},
+    year = {January 2000},
+    pages = {206--217}
+}
+
+@INPROCEEDINGS{lipasti96,
+    author = {M. Lipasti and C. Wilkerson and J. Shen},
+    title = {Value {L}ocality and {L}oad {V}alue {P}rediction},
+    booktitle = {Proceedings of the 7th International Conference on Architectural Support for Programming Languages and Operating Systems},
+    year = {October 1996},
+    pages = {138--147}
+}
+
+@INPROCEEDINGS{mehrotra96,
+    author = {S. Mehrotra and L. Harrison},
+    title = {Examination of a {M}emory {A}ccess {C}lassification {S}cheme for {P}ointer-{I}ntensive and {N}umeric {P}rograms},
+    booktitle = {Proceedings of the 10th Annual International Conference on Supercomputing},
+    year = {May 1996},
+    pages = {133--140}
+}
+
+@ARTICLE{moshovos02,
+    author = {A. Moshovos and G. Sohi},
+    title = {Reducing {M}emory {L}atency via {R}ead-{A}fter-{R}ead {M}emory {D}ependence {P}rediction},
+    journal = {IEEE Transactions on Computers},
+    year = {March 2002},
+    volume = {51},
+    number = {3},
+    pages = {313--326}
+}
+
+@INPROCEEDINGS{ramos00,
+    author = {L. Ramos and P. Ib\'a\~nez and V. Vi\~nals and J. Llaber\'ia},
+    title = {Modeling {L}oad {A}ddress {B}ehaviour through {R}ecurrences},
+    booktitle = {Proceedings of the IEEE International Symposium on Performance Analysis of Systems and Software},
+    year = {April 2000},
+    pages = {101--108}
+}
+
+@INPROCEEDINGS{reinman98,
+    author = {G. Reinmann and B. Calder},
+    title = {Predictive {T}echniques for {A}ggressive {L}oad {S}peculation},
+    booktitle = {Proceedings of the 31st Annual ACM/IEEE International Symposium on Microarchitecture},
+    year = {December 1998},
+    pages = {127--137}
+}
+
+@ARTICLE{roth98,
+    author = {A. Roth and A. Moshovos and G. Sohi},
+    title = {Dependence {B}ased {P}refetching for {L}inked {D}ata {S}tructures},
+    journal = {ACM SIGOPS Operating Systems Review},
+    year = {December 1998},
+    volume = {32},
+    number = {5},
+    pages = {115--126}
+}
+
+@INPROCEEDINGS{sazeides96,
+    author = {Y. Sazeides and S. Valliliadis and J. Smith},
+    title = {The {P}erformance {P}otential of {D}ata {D}ependence {S}peculation \& {C}ollapsing},
+    booktitle = {Proceedings of the 29th Annual ACM/IEEE International Symposium on Microarchitecture},
+    year = {December 1996},
+    pages = {238--247}
+}
+
+@INPROCEEDINGS{yoaz99,
+    author = {A. Yoaz and M. Erez and R. Ronen and S. Jourdan},
+    title = {Speculation {T}echniques for {I}mproving {L}oad {R}elated {I}nstruction {S}cheduling},
+    booktitle = {Proceedings of the 26th Annual International Symposium on Computer Architecture},
+    year = {May 1999},
+    pages = {42--53}
+}
+
+@ARTICLE{zhang01,
+    author = {J. Zhang},
+    title = {The {P}redictability of {L}oad {A}ddress},
+    journal = {ACM SIGARCH Computer Architecture News},
+    year = {September 2001},
+    volume = {29},
+    number = {4},
+    pages = {19--28}
+}
+
+@INPROCEEDINGS{zhou03,
+    author = {H. Zhou and J. Flanagan and T. Conte},
+    title = {Detecting {G}lobal {S}tride {L}ocality in {V}alue {S}treams},
+    booktitle = {Proceedings of the 30th Annual International Symposium on Computer Architecture},
+    year = {June 2003},
+    pages = {324--335}
+}
+
+@INPROCEEDINGS{cheng98,
+    author = {B. Cheng and D. Connors and W. Hwu},
+    title = {Compiler-{D}irected {E}arly {L}oad-{A}ddress {G}eneration},
+    booktitle = {Proceedings of the 31st Annual ACM/IEEE International Symposium on Microarchitecture},
+    year = {November 1998},
+    pages = {138--147}
+}
+
+@INPROCEEDINGS{morancho98,
+    author = {E. Morancho and J. Llaber\'ia and \`A. Oliv\'e},
+    title = {Split {L}ast-{A}ddress {P}redictor},
+    booktitle = {Proceedings of the International Conference on Parallel Architectures and Compilation Techniques},
+    year = {October 1998},
+    pages = {230--237}
+}
+
+@INPROCEEDINGS{lynch98,
+    author = {W. Lynch and G. Lauterbach and J. Chamdani},
+    title = {Low {L}oad {L}atency through {S}um-{A}ddressed {M}emory ({SAM})},
+    booktitle = {Proceedings of the 25th Annual International Symposium on Computer Architecture},
+    year = {June 1998},
+    pages = {369--379}
+}
+
+@TECHREPORT{chilimbi98,
+    author = {T. Chilimbi and J. Larus and M. Hill},
+    title = {Improving {P}ointer-{B}ased {C}odes through {C}ache-{C}onscious {D}ata {P}lacement},
+    institution = {Computer Sciences Department, University of Wisconsin - Madison},
+    number = {TR1365},
+    year = {1998}
+}
+
+@INPROCEEDINGS{chen97,
+    author = {C. Chen and A. Wu},
+    title = {Microarchitecture {S}upport for {I}mproving the {P}erformance of {L}oad {T}arget {P}rediction},
+    booktitle = {Proceedings of the 30th Annual ACM/IEEE International Symposium on Microarchitecture},
+    year = {December 1997},
+    pages = {228--234}
+}
+
+@INPROCEEDINGS{yamada94,
+    author = {Y. Yamada and J. Gyllenhall and G. Haab and W. Hwu},
+    title = {Data {R}elocation and {P}refetching for {P}rograms with {L}arge {D}ata {S}ets},
+    booktitle = {Proceedings of the 27th Annual ACM/IEEE International Symposium on Microarchitecture},
+    year = {November 1994},
+    pages = {118--127}
+}
+
+@ARTICLE{holloway04,
+    author = {A. Holloway and G. Sohi},
+    title = {Characterization of {P}roblem {S}tores},
+    journal = {IEEE Computer Architecture Letters},
+    year = {January 2004},
+    volume = {3},
+    number = {1},
+    pages = {9--12}
+}
+
+@INPROCEEDINGS{zhao01,
+    author = {Q. Zhao and D. Lilja},
+    title = {Compiler-{D}irected {C}lassification of {V}alue {L}ocality {B}ehavior},
+    booktitle = {Proceedings of the IEEE International Conference on Computer Design},
+    year = {September 2001},
+    pages = {240--248}
+}
+
+@TECHREPORT{rychlik98,
+    author = {B. Rychlik and J. Faistl and B. Krug and A. Kurland and J. Sung and M. Velev and J. Shen},
+    title = {Efficient and {A}ccurate {V}alue {P}rediction using {D}ynamic {C}lassification},
+    institution = {Department of Electrical and Computer Engineering, Carnegie Mellon University},
+    number = {CMuART-1998-01},
+    year = {1998}
+}
+
+@INPROCEEDINGS{burtscher02,
+    author = {M. Burtscher and A. Diwan and M. Hauswirth},
+    title = {Static {L}oad {C}lassification for {I}mproving the {V}alue {P}redictability of {D}ata-{C}ache {M}isses},
+    journal = {ACM SIGPLAN Notices},
+    year = {May 2002},
+    volume = {37},
+    number = {5},
+    pages = {222--233}
+}
+
+@ARTICLE{zhao04,
+    author = {Q. Zhao and D. Lilja},
+    title = {Static {C}lassification of {V}alue {P}redictability using {C}ompiler {H}ints},
+    journal = {IEEE Transactions on Computers},
+    year = {August 2004},
+    volume = {53},
+    number = {8},
+    pages = {929--944}
+}
+
+@ARTICLE{burtscher02h,
+    author = {M. Burtscher and B. Zorn},
+    title = {Hybrid {L}oad-{V}alue {P}redictors},
+    journal = {IEEE Transactions on Computers},
+    year = {July 2002},
+    volume = {51},
+    number = {7},
+    pages = {759--774}
+}
+
+@INPROCEEDINGS{burtscher99,
+    author = {M. Burtscher and B. Zorn},
+    title = {Exploring {L}ast \emph{n} {V}alue {P}rediction},
+    booktitle = {Proceedings of the International Conference on Parallel Architectures and Compilation Techniques},
+    year = {October 1999},
+    pages = {66--76}
+}
+
+@INPROCEEDINGS{goeman01,
+    author = {B. Goeman and H. Vandierendonck and K. Bosschere},
+    title = {Differential {FCM}: {I}ncreasing {V}alue {P}rediction {A}ccuracy by {I}mproving {T}able {U}sage {E}fficiency},
+    booktitle = {Proceedings of the 7th Annual International Symposium on High-Performance Computer Architecture},
+    year = {January 2001},
+    pages = {207--216}
+}
+
+@TECHREPORT{sazeides97,
+    author = {Y. Sazeides and J. Smith},
+    title = {Implementations of {C}ontext {B}ased {V}alue {P}redictors},
+    institution = {Department of Electrical and Computer Engineering, University of Wisconsin - Madison},
+    number = {ECE-97-8},
+    year = {December 1997}
+}
+
+@INPROCEEDINGS{sazeides97p,
+    author = {Y. Sazeides and J. Smith},
+    title = {The {P}redictability of {D}ata {V}alues},
+    booktitle = {Proceedings of the 30th Annual ACM/IEEE International Symposium on Microarchitecture},
+    year = {December 1997},
+    pages = {248--258}
+}
+
+@TECHREPORT{yi02,
+    author = {J. Yi and R. Sendag and D. Lilja},
+    title = {The {S}patial {C}haracteristics of {L}oad {I}nstructions},
+    institution = {Department of Electrical and Computer Engineering, University of Minnesota - Twin Cities},
+    number = {ARCTiC 02-10},
+    year = {October 2002}
+}
+
+@INPROCEEDINGS{sodani97,
+    author = {A. Sodani and G. Sohi},
+    title = {Dynamic {I}nstruction {R}euse},
+    booktitle = {Proceedings of the 24th Annual International Symposium on Computer Architecture},
+    year = {June 1997},
+    pages = {194--205}
+}
+
+@ARTICLE{sodani98,
+    author = {A. Sodani and G. Sohi},
+    title = {An {E}mpirical {A}nalysis of {I}nstruction {R}epetition},
+    journal = {ACM SIGOPS Operating System Review},
+    year = {December 1998},
+    volume = {32},
+    number = {5},
+    pages = {35--45}
+}
+
+@INPROCEEDINGS{gonzalez99,
+    author = {A. Gonz\'alez and J. Tubella and C. Molina},
+    title = {Trace-{L}evel {R}euse},
+    booktitle = {Proceedings of the International Conference on Parallel Processing},
+    year = {September 1999},
+    pages = {30--37}
+}
+
+@INPROCEEDINGS{zilles01,
+    author = {C. Zilles and G. Sohi},
+    title = {Execution-{B}ased {P}rediction {U}sing {S}peculative {S}lices},
+    booktitle = {Proceedings of the 28th Annual International Symposium on Computer Architecture},
+    year = {July 2001},
+    pages = {2--13}
+}
+
+@INPROCEEDINGS{zilles00,
+    author = {C. Zilles and G. Sohi},
+    title = {Understanding the {B}ackward {S}lices of {P}erformance {D}egrading {I}nstructions},
+    booktitle = {Proceedings of the 27th Annual International Symposium on Computer Architecture},
+    year = {June 2000},
+    pages = {172--181}
+}
+
+@INPROCEEDINGS{mowry97,
+    author = {T. Mowry and C. Luk},
+    title = {Predicting {D}ata {C}ache {M}isses in {N}on-{N}umeric {A}pplications through {C}orrelation {P}rofiling},
+    booktitle = {Proceedings of the 30th Annual International ACM/IEEE Symposium on Microarchitecture},
+    year = {December 1997},
+    pages = {314--320}
+}
+
+@INPROCEEDINGS{annavaram01,
+    author = {M. Annavaram and J. Patel and E. Davidson},
+    title = {Data {P}refetching by {D}ependence {G}raph {P}recomputation},
+    booktitle = {Proceedings of the 28th Annual International Symposium on Computer Architecture},
+    year = {July 2001},
+    pages = {52--61}
+}
+
+@INPROCEEDINGS{chrysos98,
+    author = {G. Chrysos and J. Emer},
+    title = {Memory {D}ependence {P}rediction using {S}tore {S}ets},
+    booktitle = {Proceedings of the 25th Annual International Symposium on Computer Architecture},
+    year = {June 1998},
+    pages = {142--153}
+}
+
+@INPROCEEDINGS{sherwood02,
+    author = {T. Sherwood and E. Perelman and G. Hamerly and B. Calder},
+    title = {Automatically {C}haracterizing {L}arge {S}cale {P}rogram {B}ehavior},
+    booktitle = {Proceedings of the 10th International Conference on Architectural Support for Programming Languages and Operating Systems},
+    year = {October 2002},
+    pages = {45--57}
+}
+
+%@INPROCEEDINGS{,
+    author = {},
+    title = {},
+    booktitle = {Proceedings of the },
+    year = {},
+    pages = {--}
+}
+
+%@ARTICLE{,
+    author = {},
+    title = {},
+    journal = {},
+    year = {},
+    volume = {},
+    number = {},
+    pages = {--}
+}
+
+%@TECHREPORT{,
+    author = {},
+    title = {},
+    institution = {},
+    number = {},
+    year = {}
+}
+
