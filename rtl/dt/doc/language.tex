@@ -56,7 +56,9 @@ The syntax of the \emph{dt} language can be sub-divided into
 several categories: comments, mem() blocks, definitions, instructions, 
 data values, high-level assignments, and high-level block statements.
 White-space and linefeeds are ignored by the \emph{dt} 
-compiler. Also, and very importantly, \emph{dt} is case-\textbf{insensitive}.
+compiler. Also, and very importantly, \emph{dt} is case-\textbf{sensitive} 
+for definitions (section~\ref{sec:definitions}), but case-\textbf{insensitive} 
+for all other constructs.
 
 \subsubsection{Comments}
 
@@ -94,7 +96,7 @@ mem (0x00400000) {
 }
 \end{lstlisting}
 
-\subsubsection{Definitions}
+\subsubsection{Definitions\label{sec:definitions}}
 
 Definitions allow the programmer to name several of the
 other \emph{dt} programming constructs.  A definition is 
@@ -102,22 +104,26 @@ a label followed by a colon follow by one of those
 program constructs.  A label can be any alpha-numeric 
 string that starting with a letter.  The label can 
 contain underscores (\_), but no other punctuation is 
-allowed.  Remember that \emph{dt} is case-insensitive, 
-so \texttt{label} is the same as \texttt{Label} is the 
-same as \texttt{LABEL}.  There is no restriction on 
+allowed.  Remember that definitions are the only 
+part of \emph{dt} that is  case-sensitive, 
+so \texttt{label} is the different than \texttt{Label} is the 
+different as \texttt{LABEL}.  There is no restriction on 
 the length of the label.
 
 There are two classes of definitions, those that 
 name an associated memory location, and those that
 name a register.  Registers are of the form: \texttt{\$r0-\$r31},
-\texttt{\$hi}, and \texttt{\$lo} for the integer registers, 
-\texttt{\$f0-\$f31} for the floating point registers, and 
-\texttt{\$t0-\$t31} for the Teleport Register File (TRF) registers.
+\texttt{\$hi}, and \texttt{\$lo} for the integer registers. 
 Once a register is given a name, the instructions that follow
 can then refer to the name in place of the register number.
 A named memory location can be used by other instructions
 to assist in forming addresses, or in leaving offset
-calculations to the compiler.
+calculations to the compiler. 
+
+The floating point registers \texttt{\$f0-\$f31}, and 
+\texttt{\$t0-\$t31} for the Teleport Register File (TRF) registers
+are available in the language for instructions, but cannot be 
+named using a definition.
 
 Note that all definitions are global.  Also note that 
 registers must be named with a register definition
@@ -158,17 +164,18 @@ by the hexadecimal value.  Listing~\ref{code:values}, line 2 shows an ADDI
 instruction, where the immediate has the value -1. Values 
 used for immediates and offsets are 
 still bound by the number of bits in the instruction encodings.
-Floating point values are also possible. They are denoted the same 
+Floating point values are also possible. They are denoted in a similar way 
 as in the C programming language with an optional sign, a whole value,
 a decimal point, a fractional value, and an optional exponent which is
 denoted with the letter \texttt{e}, an optional sign, and the value of 
-the exponent.
+the exponent.  The difference with with C is that floating point values 
+in \emph{dt} must be preceeded with a hash.
 
 \begin{lstlisting}[label=code:values,caption=Code example of immediate values and initialized memory locations,basicstyle=\footnotesize,numbers=left,numberstyle=\tiny,stepnumber=1, numbersep=6pt,frame=single,captionpos=b,escapechar=@]
 mem (0x00400000) {
     addi $r1, $r0, #-1
     ! 0xdeadbeef
-    ! 2.998e8
+    ! #2.998e8
 }
 \end{lstlisting}
 
