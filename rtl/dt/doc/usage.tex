@@ -1,5 +1,27 @@
 \section{Usage\label{sec:usage}}
 
-Command-line usage.
+\begin{verbatim}
 
+usage: ./bin/dt [flags] <file...>
 
+flags:
+       -flat            Output should be written to a
+                        checkpoint (non-debug cores).  This
+                        is the default.
+       -scratchpad      Output should be written to two files,
+                        one for the I-scratchpad and one for the
+                        D-scratchpad (debug core) which can be read
+                        in the testbench using the readmemh function.
+                        This option requires that you have mem blocks
+                        with addresses in the range of 0-256 for the
+                        I-scratchpad, and 1024-1280 for the D-scratchpad.
+       -fpga            Output should be written to three files,
+                        in the format required by the fpga testbench,
+                        one file for mem, pc, and regs (which is always
+                        zeros).
+       -out <file>      Output filenames will start with <file>.
+                        The default is "a".
+       -checking        Prints debug info (encodings, addresses, etc)
+                        for parsed program to stdout.
+
+\end{verbatim}

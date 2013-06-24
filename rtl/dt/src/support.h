@@ -85,6 +85,7 @@ void encode_instructions();
 void print_instructions();
 
 void write_flat(char *);
+void write_fpga(char *, char *, char *);
 void write_scratchpads(char *, char *);
 
 typedef enum {

@@ -2432,6 +2432,7 @@ int main(int argc, char *argv[]){
     BOOL valid_input = TRUE;
     BOOL flat_mem = FALSE;
     BOOL scratchpad_mem = FALSE;
+    BOOL fpga_mem = FALSE;
     int input_file_count = 0;
     char *input_files[100];
     char *output_file;
@@ -2444,6 +2445,8 @@ int main(int argc, char *argv[]){
                 flat_mem = TRUE;
             else if (strcmp(argv[i],"-scratchpad") == 0)
                 scratchpad_mem = TRUE;
+            else if (strcmp(argv[i],"-fpga") == 0)
+                fpga_mem = TRUE;
             else if (strcmp(argv[i],"-checking") == 0)
                 dump_debug = TRUE;
             else if (strcmp(argv[i],"-out") == 0){
@@ -2465,7 +2468,7 @@ int main(int argc, char *argv[]){
     }
 
     if (input_file_count == 0) valid_input = FALSE;
-    if (!(flat_mem || scratchpad_mem)) flat_mem = TRUE;
+    if (!(flat_mem || scratchpad_mem || fpga_mem)) flat_mem = TRUE;
     if (!user_named_output) output_file = strdup("a");
 
     if (!valid_input){
@@ -2481,6 +2484,10 @@ int main(int argc, char *argv[]){
         fprintf(stderr,"                        This option requires that you have mem blocks\n");
         fprintf(stderr,"                        with addresses in the range of 0-256 for the\n");
         fprintf(stderr,"                        I-scratchpad, and 1024-1280 for the D-scratchpad.\n");
+        fprintf(stderr,"       -fpga            Output should be written to three files, \n");
+        fprintf(stderr,"                        in the format required by the fpga testbench,\n");
+        fprintf(stderr,"                        one file for mem, pc, and regs (which is always\n");
+        fprintf(stderr,"                        zeros).\n");
         fprintf(stderr,"       -out <file>      Output filenames will start with <file>.\n");
         fprintf(stderr,"                        The default is \"a\".\n");
         fprintf(stderr,"       -checking        Prints debug info (encodings, addresses, etc) \n");
@@ -2517,18 +2524,34 @@ int main(int argc, char *argv[]){
         }
 
         if (flat_mem){
-            char buff[1000];
+            char *buff = (char*) malloc(sizeof(char)*1000);
             sprintf(buff,"%s.chkpt",output_file);
             write_flat(buff);
+            free (buff);
+        }
+
+        if (fpga_mem){
+            char *mbuff = (char*) malloc(sizeof(char)*1000);
+            char *pbuff = (char*) malloc(sizeof(char)*1000);
+            char *rbuff = (char*) malloc(sizeof(char)*1000);
+            sprintf(mbuff,"%s.mem.init",output_file);
+            sprintf(pbuff,"%s.pc.init",output_file);
+            sprintf(rbuff,"%s.rf.init",output_file);
+            write_fpga(mbuff,pbuff,rbuff);
+            free (mbuff);
+            free (pbuff);
+            free (rbuff);
         }
 
         if (scratchpad_mem){
-            char ibuff[1000];
-            char dbuff[1000];
+            char *ibuff = (char*) malloc(sizeof(char)*1000);
+            char *dbuff = (char*) malloc(sizeof(char)*1000);
             check_scratchpad();
             sprintf(ibuff,"%s.i.dat",output_file);
             sprintf(dbuff,"%s.d.dat",output_file);
             write_scratchpads(ibuff,dbuff);
+            free (ibuff);
+            free (dbuff);
         }
     }
 

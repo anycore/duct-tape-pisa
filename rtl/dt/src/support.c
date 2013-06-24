@@ -304,7 +304,7 @@ void print_instructions(){
 
 
 
-/* these is a cannibalized mem_access function 
+/* these are cannibalized mem_access functions 
    from 721sim.  This is to support writing a 721sim
    style checkpoint (see below). */
 #define SIZE_MEM_TABLE 0x8000
@@ -348,6 +348,82 @@ void write_mem(uint32_t addr, void *vp, int nbytes){
     }
 }
 
+void read_mem(uint32_t addr, void *vp, int nbytes){
+    char *p = (char*)vp;
+
+    /* allocate memory blocks if necessary */
+    if (!mem_table[MEM_BLOCK(addr)])
+        mem_table[MEM_BLOCK(addr)] = (char*)calloc(SIZE_MEM_BLOCK, 1);
+
+    switch (nbytes) {
+        case 1:
+            *((uint8_t *)p) = *((uint8_t*)(mem_table[MEM_BLOCK(addr)]+MEM_OFFSET(addr)));
+            break;
+        case 2:
+            *((uint16_t *)p) = *((uint16_t*)(mem_table[MEM_BLOCK(addr)]+MEM_OFFSET(addr)));
+            break;
+        case 4:
+            *((uint32_t *)p) = *((uint32_t*)(mem_table[MEM_BLOCK(addr)]+MEM_OFFSET(addr)));
+            break;
+        case 8:
+            *((uint64_t *)p) = *((uint64_t*)(mem_table[MEM_BLOCK(addr)]+MEM_OFFSET(addr)));
+            break;
+        default: {
+                /* nbytes >= 16 and power of two */
+                uint32_t words = nbytes >> 2;
+                while (words-- > 0) {
+                    *((uint32_t *)p) = *((uint32_t*)(mem_table[MEM_BLOCK(addr)]+MEM_OFFSET(addr)));
+                    p += 4;
+                    addr += 4;
+                }
+            }
+            break;
+    }
+}
+
+
+BOOL mem_initted = FALSE;
+void fill_mem(char *err){
+    int i;
+    memblock_list_t *list = NULL;
+    if (mem_initted == FALSE){
+        mem_table = (char**)malloc(sizeof(char*)*SIZE_MEM_TABLE);
+        for (i=0;i<SIZE_MEM_TABLE;i++)
+            mem_table[i] = NULL;
+
+        list = block_list;
+        while (list){
+            mem_entry_t *working = list->head;
+            while (working){
+                if (working->type == ENTRY_INSTRUCTION){
+                    /* write to mem table */
+                    write_mem(working->address, &(working->encoding), 8);
+                }
+                else if (working->type == ENTRY_IDATA){
+                    /* write to mem table */
+                    write_mem(working->address, &(working->ivalue), 4);
+                }
+                else if (working->type == ENTRY_FDATA){
+                    /* write to mem table */
+                    write_mem(working->address, &(working->fvalue), 4);
+                }
+                else if (working->type == ENTRY_DEFINITION){
+                    /* do nothing */
+                }
+                else if (working->type == ENTRY_PHI_NODE){
+                    /* do nothing */
+                }
+                else {
+                    yyerror(err);
+                }
+                working = working->next;
+            }
+            list = list->next;
+        }
+        mem_initted = TRUE;
+    }
+}
+
 
 /* The following function writes the program to a 721sim 
    checkpoint.  It doesn't actually use the checkpoint 
@@ -360,9 +436,7 @@ void write_flat(char *file){
     int32_t i;
     unsigned char chkpt_header[SIZE_CHKPT_HEADER];
     uint32_t nblocks = 0;
-    memblock_list_t *list = NULL;
     FILE *fd = fopen(file,"w");
-    mem_table = (char**)malloc(sizeof(char*)*SIZE_MEM_TABLE);
 
     for (i=0;i<SIZE_CHKPT_HEADER;i++)
         chkpt_header[i] = 0;
@@ -372,39 +446,8 @@ void write_flat(char *file){
 
     fwrite(&chkpt_header, 1, SIZE_CHKPT_HEADER, fd); /* write the header */
 
-    for (i=0;i<SIZE_MEM_TABLE;i++)
-        mem_table[i] = NULL;
-
-    /* TODO fill mem table */
-    list = block_list;
-    while (list){
-        mem_entry_t *working = list->head;
-        while (working){
-            if (working->type == ENTRY_INSTRUCTION){
-                /* write to mem table */
-                write_mem(working->address, &(working->encoding), 8);
-            }
-            else if (working->type == ENTRY_IDATA){
-                /* write to mem table */
-                write_mem(working->address, &(working->ivalue), 4);
-            }
-            else if (working->type == ENTRY_FDATA){
-                /* write to mem table */
-                write_mem(working->address, &(working->fvalue), 4);
-            }
-            else if (working->type == ENTRY_DEFINITION){
-                /* do nothing */
-            }
-            else if (working->type == ENTRY_PHI_NODE){
-                /* do nothing */
-            }
-            else {
-                yyerror("Invalid entry type when writing checkpoint");
-            }
-            working = working->next;
-        }
-        list = list->next;
-    }
+    /* fill mem table */
+    fill_mem("Invalid entry type when writing checkpoint");
 
     /* track number of touched blocks */
     for (i=0;i<SIZE_MEM_TABLE;i++)
@@ -424,6 +467,45 @@ void write_flat(char *file){
         }
     }
     fclose(fd);
+}
+
+void write_fpga(char *mfile, char *pfile, char *rfile){
+    int i,j;
+    FILE *mfd = NULL;
+    FILE *pfd = NULL;
+    FILE *rfd = NULL;
+
+    fill_mem("Invalid entry type when writing fpga init files");
+
+    mfd = fopen(mfile,"w");
+    /* upper 16 bits of addresses */
+    for (i=0; i<0x8000; i++){
+        if (mem_table[MEM_BLOCK((i<<16))]){
+            fprintf(mfd,"%04x\n",i);
+            for (j=0; j<0x10000; j+=16){
+                uint32_t addr = (i<<16) | j;
+                uint32_t word0;
+                uint32_t word1;
+                uint32_t word2;
+                uint32_t word3;
+                read_mem((addr+ 0), &word0, 4);
+                read_mem((addr+ 4), &word1, 4);
+                read_mem((addr+ 8), &word2, 4);
+                read_mem((addr+12), &word3, 4);
+                fprintf(mfd,"%08x%08x%08x%08x\n",word2,word3,word0,word1);
+            }
+        }
+    }
+    fclose(mfd);
+
+    pfd = fopen(pfile,"w");
+    fprintf(pfd,"%08x",pc);
+    fclose(pfd);
+
+    rfd = fopen(rfile,"w");
+    for (i=0;i<34;i++)
+        fprintf(rfd,"00000000000000000000000000000000\n");
+    fclose(rfd);
 }
 
 void write_scratchpads(char *ifile, char *dfile){

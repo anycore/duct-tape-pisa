@@ -493,77 +493,89 @@ shown in Listing~\ref{code:matmult}.
 
 
 \begin{lstlisting}[label=code:matmult,caption=Matrix multiplication example source code,basicstyle=\footnotesize,numbers=left,numberstyle=\tiny,stepnumber=1, numbersep=6pt,frame=single,captionpos=b,escapechar=`]
-mem (0x00400000) {
-i: $r1
-j: $r2
-k: $r3
-icond: $r4
-jcond: $r5
-kcond: $r6
-aaddr: $r7
-baddr: $r8
-caddr: $r9
-aval:  $r10
-bval:  $r11
-cval:  $r12
-temp:  $r13
-mres:  $lo
+$pc = 0x00400000
 
-    i = #0
-    icond = i < #4
+mem (0x00400000) {
+ii:      $r1
+jj:      $r2
+kk:      $r3
+icond:   $r4
+jcond:   $r5
+kcond:   $r6
+aaddr:   $r7
+baddr:   $r8
+caddr:   $r9
+aval:    $r10
+bval:    $r11
+cval:    $r12
+mtemp:   $r13
+stemp:   $r14
+four:    $r15
+sixteen: $r16
+mres:    $lo
+
+    four = #4
+    sixteen = #16
+    ii = #0
+    icond = ii < #4
     while (icond) {
-        j = #0
-        jcond = j < #4
+        jj = #0
+        jcond = jj < #4
         while (jcond) {
             % initialize c[i][j] to zero
             cval = #0
 
-            k = #0
-            kcond = k < #4
+            kk = #0
+            kcond = kk < #4
             while (kcond) {
                 % compute address of a[i][k]
-                aaddr = @a
-                mres = i * #4
-                temp = mres
-                temp = temp + k
-                aaddr = aaddr + temp
+                aaddr = @A
+                mres = ii * sixteen
+                mtemp = mres
+                mres = kk * four
+                stemp = mres
+                mtemp = mtemp + stemp
+                aaddr = aaddr + mtemp
 
-                % compute address of b[k][j]
-                baddr = @b
-                mres = k * #4
-                temp = mres
-                temp = temp + j
-                baddr = baddr + temp
+                % compute address of a[k][j]
+                baddr = @B
+                mres = kk * sixteen
+                mtemp = mres
+                mres = jj * four
+                stemp = mres
+                mtemp = mtemp + stemp
+                baddr = baddr + mtemp
 
                 % load the values of a[i][k] and b[k][j]
-                lw aval, #0(aaddr)
-                lw bval, #0(baddr)
+                lw aval, #0[aaddr]
+                lw bval, #0[baddr]
 
                 % c[i][j] += a[i][k] * b[k][j]
                 mres = aval * bval
-                temp = mres
-                cval = cval + mres
+                mtemp = mres
+                cval = cval + mtemp
 
-                k = k + #1
-                kcond = k < #4
+                kk = kk + #1
+                kcond = kk < #4
             }
 
-            % compute c[i][j] address 
-            caddr = @c
-            mres = i * #4
-            temp = mres
-            temp = temp + j
-            caddr = caddr + temp
+            % compute c[i][j] address
+            caddr = @C
+            mres = ii * sixteen
+            mtemp = mres
+            mres = jj * four
+            stemp = mres
+            mtemp = mtemp + stemp
+            caddr = caddr + mtemp
 
             % store c[i][j]
-            sw cval, #0(caddr)
+            sw cval, #0[caddr]
 
-            j = j + 1
-            jcond = j < #4
+            jj = jj + #1
+            jcond = jj < #4
         }
-
-        i = i + #1
-        icond = i < #4
+        ii = ii + #1
+        icond = ii < #4
     }
 }
 
