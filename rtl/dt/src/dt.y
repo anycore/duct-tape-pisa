@@ -274,7 +274,7 @@ instlist:                   {$$=NULL;}
                                 /* set the branch target to the phi node name */
                                 top_branch->inst->target_name = strdup(phi_node->name);
                                 /* generate branch that will target the top of loop body */
-                                bottom_branch = new_instruction(PISA_BEQ); 
+                                bottom_branch = new_instruction(PISA_BNE); 
                                 bottom_branch->inst->rsrc1=$4; 
                                 bottom_branch->inst->rsrc2=0; // compare to $r0
                                 /* check the name of the top of the loop body -- create name if necessary */
@@ -339,7 +339,7 @@ instlist:                   {$$=NULL;}
                                 /* set the branch target to the phi node name */
                                 top_branch->inst->target_name = strdup(phi_node->name);
                                 /* generate branch that will target the top of loop body */
-                                bottom_branch = new_instruction(PISA_BEQ); 
+                                bottom_branch = new_instruction(PISA_BNE); 
                                 bottom_branch->inst->rsrc1=$6; 
                                 bottom_branch->inst->rsrc2=0; // compare to $r0
                                 /* check the name of the top of the loop body -- create name if necessary */
@@ -389,7 +389,7 @@ instlist:                   {$$=NULL;}
                                 mem_entry_t *branch;
                                 char *target;
                                 /* generate and branch to restart loop body */
-                                branch = new_instruction(PISA_BEQ); 
+                                branch = new_instruction(PISA_BNE); 
                                 branch->inst->rsrc1=$8; 
                                 branch->inst->rsrc2=0; // compare to $r0
                                 /* check the name of the top of the loop body -- create name if necessary */
@@ -435,7 +435,7 @@ instlist:                   {$$=NULL;}
                                 mem_entry_t *branch;
                                 char *target;
                                 /* generate and branch to restart loop body */
-                                branch = new_instruction(PISA_BEQ); 
+                                branch = new_instruction(PISA_BNE); 
                                 branch->inst->rsrc1=$10; 
                                 branch->inst->rsrc2=0; // compare to $r0
                                 /* check the name of the top of the loop body -- create name if necessary */
@@ -497,7 +497,7 @@ instlist:                   {$$=NULL;}
                                 /* set the branch target to the phi node name */
                                 top_branch->inst->target_name = strdup(phi_node->name);
                                 /* generate branch that will target the top of loop body */
-                                bottom_branch = new_instruction(PISA_BNE);
+                                bottom_branch = new_instruction(PISA_BEQ);
                                 bottom_branch->inst->rsrc1=$4;
                                 bottom_branch->inst->rsrc2=0; // compare to $r0
                                 /* check the name of the top of the loop body -- create name if necessary */
@@ -562,7 +562,7 @@ instlist:                   {$$=NULL;}
                                 /* set the branch target to the phi node name */
                                 top_branch->inst->target_name = strdup(phi_node->name);
                                 /* generate branch that will target the top of loop body */
-                                bottom_branch = new_instruction(PISA_BNE);
+                                bottom_branch = new_instruction(PISA_BEQ);
                                 bottom_branch->inst->rsrc1=$6;
                                 bottom_branch->inst->rsrc2=0; // compare to $r0
                                 /* check the name of the top of the loop body -- create name if necessary */
@@ -612,7 +612,7 @@ instlist:                   {$$=NULL;}
                                 mem_entry_t *branch;
                                 char *target;
                                 /* generate and branch to restart loop body */
-                                branch = new_instruction(PISA_BNE);
+                                branch = new_instruction(PISA_BEQ);
                                 branch->inst->rsrc1=$8;
                                 branch->inst->rsrc2=0; // compare to $r0
                                 /* check the name of the top of the loop body -- create name if necessary */
@@ -658,7 +658,7 @@ instlist:                   {$$=NULL;}
                                 mem_entry_t *branch;
                                 char *target;
                                 /* generate and branch to restart loop body */
-                                branch = new_instruction(PISA_BNE);
+                                branch = new_instruction(PISA_BEQ);
                                 branch->inst->rsrc1=$10;
                                 branch->inst->rsrc2=0; // compare to $r0
                                 /* check the name of the top of the loop body -- create name if necessary */
@@ -2426,7 +2426,6 @@ int yydebug = 1;
 extern int yylineno; /* from lexer */
 char * current_file;
 
-/* TODO dump code in proper memory format for checkpoint */
 int main(int argc, char *argv[]){
     int i;
     BOOL valid_input = TRUE;
