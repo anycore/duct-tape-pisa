@@ -1348,7 +1348,7 @@ inst: OP_J IIMM             {
                                 $$=(void*)entry;
                             }
     | validireg ASSIGN validireg PLUS validireg {
-                                mem_entry_t *entry=new_instruction(PISA_ADD); 
+                                mem_entry_t *entry=new_instruction(PISA_ADDU); 
                                 entry->inst->rdst=$1; 
                                 entry->inst->rsrc1=$3; 
                                 entry->inst->rsrc2=$5; 
@@ -1364,7 +1364,7 @@ inst: OP_J IIMM             {
                                 $$=(void*)entry;
                             }
     | validireg ASSIGN validireg PLUS IIMM {
-                                mem_entry_t *entry=new_instruction(PISA_ADDI); 
+                                mem_entry_t *entry=new_instruction(PISA_ADDIU); 
                                 entry->inst->rdst=$1; 
                                 entry->inst->rsrc1=$3; 
                                 entry->inst->imm=$5; 
@@ -1372,7 +1372,7 @@ inst: OP_J IIMM             {
                                 $$=(void*)entry;
                             }
     | validireg ASSIGN IIMM PLUS validireg {
-                                mem_entry_t *entry=new_instruction(PISA_ADDI); 
+                                mem_entry_t *entry=new_instruction(PISA_ADDIU); 
                                 entry->inst->rdst=$1; 
                                 entry->inst->rsrc1=$5; 
                                 entry->inst->imm=$3; 
