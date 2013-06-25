@@ -1701,7 +1701,7 @@ inst: OP_J IIMM             {
                                     entry->inst->imm=((~((uint32_t)$4))>>16); 
                                     entry->status = ENTRY_COMPLETE;
                                     if ((~((uint32_t)$4)) & 0x0000ffff){ /* only do lower two bytes if needed */
-                                        mem_entry_t *entry2=new_instruction(PISA_ADDI);
+                                        mem_entry_t *entry2=new_instruction(PISA_ORI);
                                         entry2->inst->rdst=$1;
                                         entry2->inst->rsrc1=$1;
                                         entry2->inst->imm=((~((uint32_t)$4))&0xffff);
@@ -2232,7 +2232,7 @@ inst: OP_J IIMM             {
     | validireg ASSIGN ADDRESSOF LABEL {
                                 mem_entry_t *top;
                                 mem_entry_t *upper_entry=new_instruction(PISA_LUI);
-                                mem_entry_t *lower_entry=new_instruction(PISA_ADDI);
+                                mem_entry_t *lower_entry=new_instruction(PISA_ORI);
                                 upper_entry->inst->rdst=$1;
                                 upper_entry->inst->target_name = strdup($4);
                                 lower_entry->inst->rdst=$1;
@@ -2250,7 +2250,7 @@ inst: OP_J IIMM             {
                                     entry->inst->imm=($3>>16); 
                                     entry->status = ENTRY_COMPLETE;
                                     if ($3 & 0x0000ffff){ /* only do lower two bytes if needed */
-                                        mem_entry_t *entry2=new_instruction(PISA_ADDI);
+                                        mem_entry_t *entry2=new_instruction(PISA_ORI);
                                         entry2->inst->rdst=$1;
                                         entry2->inst->rsrc1=$1;
                                         entry2->inst->imm=($3&0xffff);
@@ -2260,7 +2260,7 @@ inst: OP_J IIMM             {
                                 }
                                 else{
                                     /* only an ADDI */
-                                    entry=new_instruction(PISA_ADDI);
+                                    entry=new_instruction(PISA_ORI);
                                     entry->inst->rdst=$1;
                                     entry->inst->rsrc1=0; /* just addi to $r0 */
                                     entry->inst->imm=$3;

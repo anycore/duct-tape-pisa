@@ -1,0 +1,20 @@
+$pc = 0x00400000
+
+mem (0x00400000) {
+ii:    $r1
+stop:  $r2
+icond: $r3
+accum: $r4
+
+    ii = #0
+    stop = #10
+    accum = 0x00000001
+
+    icond = ii < stop
+    while (icond) {
+        accum = accum + accum
+        ii = ii + #1
+        icond = ii < stop
+    }
+
+}

@@ -6,10 +6,10 @@ bar: $r2
 baz: $r3
 quux: $r4
 
-    foo = #-1
-    bar = #1
-    baz = foo + bar
-    baz = ~baz
-    baz = baz >> #15
-    quux = baz < bar
+    foo = #-1        % $r1 = 0xffffffff
+    bar = #1         % $r2 = 0x00000001
+    baz = foo + bar  % $r3 = 0x00000000
+    baz = ~baz       % $r3 = 0xffffffff
+    baz = baz >> #15 % $r3 = 0x0001ffff
+    quux = baz < bar % $r4 = 0x00000000
 }
