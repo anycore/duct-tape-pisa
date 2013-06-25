@@ -1,0 +1,15 @@
+$pc = 0x00400000
+
+mem (0x00400000) {
+foo: $r1
+bar: $r2
+baz: $r3
+quux: $r4
+
+    foo = #-1
+    bar = #1
+    baz = foo + bar
+    baz = ~baz
+    baz = baz >> #15
+    quux = baz < bar
+}
