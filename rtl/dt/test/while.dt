@@ -6,15 +6,15 @@ stop:  $r2
 icond: $r3
 accum: $r4
 
-    ii = #0
-    stop = #10
-    accum = 0x00000001
+    ii = #0                        % $r1 = 0
+    stop = #10                     % $r2 = 10
+    accum = 0x00000001             % $r4 = 1
 
-    icond = ii < stop
+    icond = ii < stop              % $r3 = 1
     while (icond) {
-        accum = accum + accum
-        ii = ii + #1
-        icond = ii < stop
+        accum = accum + accum      % $r4 = 2, 4, 8, 16, 32, 64, 128, 256, 1024, 2048
+        ii = ii + #1               % $r1 = 1, 2, 3, 4,  5,  6,  7,   8,   9,    10
+        icond = ii < stop          % $r3 = 1, 1, 1, 1,  1,  1,  1,   1,   1,    0
     }
 
 }

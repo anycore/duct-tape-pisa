@@ -194,7 +194,7 @@ void calculate_offsets(){
                         working->inst->imm = (target_address >> 16) & 0xffff;
                         working->status = ENTRY_COMPLETE;
                     }
-                    else if (working->inst->opcode == PISA_ADDI){
+                    else if (working->inst->opcode == PISA_ORI){
                         /* from the address-of operator */
                         working->inst->imm = target_address & 0xffff;
                         working->status = ENTRY_COMPLETE;

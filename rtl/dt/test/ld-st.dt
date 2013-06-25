@@ -1,0 +1,20 @@
+$pc = 0x00400000
+
+mem (0x00400000) {
+lval:  $r1
+sval:  $r2
+laddr: $r3
+saddr: $r4
+
+    laddr = @l          % $r3 = 0x10000000
+    lw lval, #0[laddr]  % $r1 = 0xaaaaaaaa
+
+    saddr = @s          % $r4 = 0x10000004
+    sval = 0x55555555   % $r2 = 0x55555555
+    sw sval, #0[saddr]
+}
+
+mem (0x10000000) {
+l : ! 0xaaaaaaaa
+s : ! 0x00000000
+}

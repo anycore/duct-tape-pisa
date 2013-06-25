@@ -2259,7 +2259,7 @@ inst: OP_J IIMM             {
                                     }
                                 }
                                 else{
-                                    /* only an ADDI */
+                                    /* only an ORI */
                                     entry=new_instruction(PISA_ORI);
                                     entry->inst->rdst=$1;
                                     entry->inst->rsrc1=0; /* just addi to $r0 */
