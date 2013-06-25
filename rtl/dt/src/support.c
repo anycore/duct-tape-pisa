@@ -265,7 +265,369 @@ void check_scratchpad(){
         yyerror("Only two mem() blocks are allowed when using -scratchpad");
 }
 
-void print_instructions(){
+#define SEXT_IMM18(x)    ((int32_t)(((x)&0x20000)?((x)|0xfffc0000):((x)&0x0003ffff)))
+#define SEXT_IMM16(x)    ((int32_t)(((x)&0x8000)?((x)|0xffff0000):((x)&0x0000ffff)))
+
+void sprint_asm(char *buff, instruction_t *inst){
+    switch (inst->opcode){
+        case PISA_J:
+            sprintf(buff,"j 0x%x",inst->target_address);
+            break;
+        case PISA_JAL:
+            sprintf(buff,"jal 0x%x",inst->target_address);
+            break;
+        case PISA_JR:
+            sprintf(buff,"jr $r%d",inst->rsrc1);
+            break;
+        case PISA_JALR:
+            sprintf(buff,"jalr $r%d, $r%d",inst->rdst,inst->rsrc1);
+            break;
+        case PISA_BEQ:
+            sprintf(buff,"beq $r%d, $r%d, #%d",inst->rsrc1,inst->rsrc2,SEXT_IMM18(inst->imm));
+            break;
+        case PISA_BNE:
+            sprintf(buff,"bne $r%d, $r%d, #%d",inst->rsrc1,inst->rsrc2,SEXT_IMM18(inst->imm));
+            break;
+        case PISA_BLEZ:
+            sprintf(buff,"blez $r%d, #%d",inst->rsrc1,SEXT_IMM18(inst->imm));
+            break;
+        case PISA_BGTZ:
+            sprintf(buff,"bgtz $r%d, #%d",inst->rsrc1,SEXT_IMM18(inst->imm));
+            break;
+        case PISA_BLTZ:
+            sprintf(buff,"bltz $r%d, #%d",inst->rsrc1,SEXT_IMM18(inst->imm));
+            break;
+        case PISA_BGEZ:
+            sprintf(buff,"bgez $r%d, #%d",inst->rsrc1,SEXT_IMM18(inst->imm));
+            break;
+        case PISA_BC1F:
+            sprintf(buff,"bc1f #%d",SEXT_IMM18(inst->imm));
+            break;
+        case PISA_BC1T:
+            sprintf(buff,"bc1t #%d",SEXT_IMM18(inst->imm));
+            break;
+        case PISA_LB_D:
+            sprintf(buff,"lb $r%d, #%d[$r%d]",inst->rdst,SEXT_IMM16(inst->imm),inst->rbase);
+            break;
+        case PISA_LB_I:
+            sprintf(buff,"lb $r%d, $r%d[$r%d]",inst->rdst,inst->rsrc1,inst->rsrc2);
+            break;
+        case PISA_LBU_D:
+            sprintf(buff,"lbu $r%d, #%d[$r%d]",inst->rdst,SEXT_IMM16(inst->imm),inst->rbase);
+            break;
+        case PISA_LBU_I:
+            sprintf(buff,"lbu $r%d, $r%d[$r%d]",inst->rdst,inst->rsrc1,inst->rsrc2);
+            break;
+        case PISA_LH_D:
+            sprintf(buff,"lh $r%d, #%d[$r%d]",inst->rdst,SEXT_IMM16(inst->imm),inst->rbase);
+            break;
+        case PISA_LH_I:
+            sprintf(buff,"lh $r%d, $r%d[$r%d]",inst->rdst,inst->rsrc1,inst->rsrc2);
+            break;
+        case PISA_LHU_D:
+            sprintf(buff,"lhu $r%d, #%d[$r%d]",inst->rdst,SEXT_IMM16(inst->imm),inst->rbase);
+            break;
+        case PISA_LHU_I:
+            sprintf(buff,"lhu $r%d, $r%d[$r%d]",inst->rdst,inst->rsrc1,inst->rsrc2);
+            break;
+        case PISA_LW_D:
+            sprintf(buff,"lw $r%d, #%d[$r%d]",inst->rdst,SEXT_IMM16(inst->imm),inst->rbase);
+            break;
+        case PISA_LW_I:
+            sprintf(buff,"lw $r%d, $r%d[$r%d]",inst->rdst,inst->rsrc1,inst->rsrc2);
+            break;
+        case PISA_DLW_D:
+            sprintf(buff,"dlw $r%d, #%d[$r%d]",inst->rdst,SEXT_IMM16(inst->imm),inst->rbase);
+            break;
+        case PISA_DLW_I:
+            sprintf(buff,"dlw $r%d, $r%d[$r%d]",inst->rdst,inst->rsrc1,inst->rsrc2);
+            break;
+        case PISA_L_S_D:
+            sprintf(buff,"l.s $r%d, #%d[$r%d]",inst->rdst,SEXT_IMM16(inst->imm),inst->rbase);
+            break;
+        case PISA_L_S_I:
+            sprintf(buff,"l.s $r%d, $r%d[$r%d]",inst->rdst,inst->rsrc1,inst->rsrc2);
+            break;
+        case PISA_L_D_D:
+            sprintf(buff,"l.d $r%d, #%d[$r%d]",inst->rdst,SEXT_IMM16(inst->imm),inst->rbase);
+            break;
+        case PISA_L_D_I:
+            sprintf(buff,"l.d $r%d, $r%d[$r%d]",inst->rdst,inst->rsrc1,inst->rsrc2);
+            break;
+        case PISA_LWL:
+            sprintf(buff,"lwl TODO");
+            break;
+        case PISA_LWR:
+            sprintf(buff,"lwr TODO");
+            break;
+        case PISA_SB_D:
+            sprintf(buff,"sb $r%d, #%d[$r%d]",inst->rsrc0,SEXT_IMM16(inst->imm),inst->rbase);
+            break;
+        case PISA_SB_I:
+            sprintf(buff,"sb $r%d, $r%d[$r%d]",inst->rsrc0,inst->rsrc2,inst->rsrc1);
+            break;
+        case PISA_SH_D:
+            sprintf(buff,"sh $r%d, #%d[$r%d]",inst->rsrc0,SEXT_IMM16(inst->imm),inst->rbase);
+            break;
+        case PISA_SH_I:
+            sprintf(buff,"sh $r%d, $r%d[$r%d]",inst->rsrc0,inst->rsrc2,inst->rsrc1);
+            break;
+        case PISA_SW_D:
+            sprintf(buff,"sw $r%d, #%d[$r%d]",inst->rsrc0,SEXT_IMM16(inst->imm),inst->rbase);
+            break;
+        case PISA_SW_I:
+            sprintf(buff,"sw $r%d, $r%d[$r%d]",inst->rsrc0,inst->rsrc2,inst->rsrc1);
+            break;
+        case PISA_DSW_D:
+            sprintf(buff,"dsw $r%d, #%d[$r%d]",inst->rsrc0,SEXT_IMM16(inst->imm),inst->rbase);
+            break;
+        case PISA_DSW_I:
+            sprintf(buff,"dsw $r%d, $r%d[$r%d]",inst->rsrc0,inst->rsrc2,inst->rsrc1);
+            break;
+        case PISA_DSZ_D:
+            sprintf(buff,"dsz #%d[$r%d]",SEXT_IMM16(inst->imm),inst->rbase);
+            break;
+        case PISA_DSZ_I:
+            sprintf(buff,"dsz $r%d[$r%d]",inst->rsrc2,inst->rsrc1);
+            break;
+        case PISA_S_S_D:
+            sprintf(buff,"s.s $r%d, #%d[$r%d]",inst->rsrc0,SEXT_IMM16(inst->imm),inst->rbase);
+            break;
+        case PISA_S_S_I:
+            sprintf(buff,"s.s $r%d, $r%d[$r%d]",inst->rsrc0,inst->rsrc2,inst->rsrc1);
+            break;
+        case PISA_S_D_D:
+            sprintf(buff,"s.d $r%d, #%d[$r%d]",inst->rsrc0,SEXT_IMM16(inst->imm),inst->rbase);
+            break;
+        case PISA_S_D_I:
+            sprintf(buff,"s.d $r%d, $r%d[$r%d]",inst->rsrc0,inst->rsrc2,inst->rsrc1);
+            break;
+        case PISA_SWL:
+            sprintf(buff,"swl TODO");
+            break;
+        case PISA_SWR:
+            sprintf(buff,"swr TODO");
+            break;
+        case PISA_ADD:
+            sprintf(buff,"add $r%d, $r%d, $r%d",inst->rdst,inst->rsrc1,inst->rsrc2);
+            break;
+        case PISA_ADDI:
+            sprintf(buff,"addi $r%d, $r%d, 0x%x",inst->rdst,inst->rsrc1,SEXT_IMM16(inst->imm));
+            break;
+        case PISA_ADDU:
+            sprintf(buff,"addu $r%d, $r%d, $r%d",inst->rdst,inst->rsrc1,inst->rsrc2);
+            break;
+        case PISA_ADDIU:
+            sprintf(buff,"addiu $r%d, $r%d, 0x%x",inst->rdst,inst->rsrc1,(inst->imm&0xffff));
+            break;
+        case PISA_SUB:
+            sprintf(buff,"sub $r%d, $r%d, $r%d",inst->rdst,inst->rsrc1,inst->rsrc2);
+            break;
+        case PISA_SUBU:
+            sprintf(buff,"subu $r%d, $r%d, $r%d",inst->rdst,inst->rsrc1,inst->rsrc2);
+            break;
+        case PISA_MULT:
+            sprintf(buff,"mult $r%d, $r%d",inst->rsrc1,inst->rsrc2);
+            break;
+        case PISA_MULTU:
+            sprintf(buff,"multu $r%d, $r%d",inst->rsrc1,inst->rsrc2);
+            break;
+        case PISA_DIV:
+            sprintf(buff,"div $r%d, $r%d",inst->rsrc1,inst->rsrc2);
+            break;
+        case PISA_DIVU:
+            sprintf(buff,"divu $r%d, $r%d",inst->rsrc1,inst->rsrc2);
+            break;
+        case PISA_MFHI:
+            sprintf(buff,"mfhi $r%d",inst->rdst);
+            break;
+        case PISA_MTHI:
+            sprintf(buff,"mthi $r%d",inst->rsrc1);
+            break;
+        case PISA_MFLO:
+            sprintf(buff,"mflo $r%d",inst->rdst);
+            break;
+        case PISA_MTLO:
+            sprintf(buff,"mtlo $r%d",inst->rsrc1);
+            break;
+        case PISA_AND:
+            sprintf(buff,"and $r%d, $r%d, $r%d",inst->rdst,inst->rsrc1,inst->rsrc2);
+            break;
+        case PISA_ANDI:
+            sprintf(buff,"andi $r%d, $r%d, 0x%x",inst->rdst,inst->rsrc1,(inst->imm&0xffff));
+            break;
+        case PISA_OR:
+            sprintf(buff,"or $r%d, $r%d, $r%d",inst->rdst,inst->rsrc1,inst->rsrc2);
+            break;
+        case PISA_ORI:
+            sprintf(buff,"ori $r%d, $r%d, 0x%x",inst->rdst,inst->rsrc1,(inst->imm&0xffff));
+            break;
+        case PISA_XOR:
+            sprintf(buff,"xor $r%d, $r%d, $r%d",inst->rdst,inst->rsrc1,inst->rsrc2);
+            break;
+        case PISA_XORI:
+            sprintf(buff,"xori $r%d, $r%d, 0x%x",inst->rdst,inst->rsrc1,(inst->imm&0xffff));
+            break;
+        case PISA_NOR:
+            sprintf(buff,"nor $r%d, $r%d, $r%d",inst->rdst,inst->rsrc1,inst->rsrc2);
+            break;
+        case PISA_SLL:
+            sprintf(buff,"sll $r%d, $r%d, #%d",inst->rdst,inst->rsrc1,(inst->imm&0x1f));
+            break;
+        case PISA_SLLV:
+            sprintf(buff,"sllv $r%d, $r%d, $r%d",inst->rdst,inst->rsrc1,inst->rsrc2);
+            break;
+        case PISA_SRL:
+            sprintf(buff,"srl $r%d, $r%d, #%d",inst->rdst,inst->rsrc1,(inst->imm&0x1f));
+            break;
+        case PISA_SRLV:
+            sprintf(buff,"srlv $r%d, $r%d, $r%d",inst->rdst,inst->rsrc1,inst->rsrc2);
+            break;
+        case PISA_SRA:
+            sprintf(buff,"sra $r%d, $r%d, #%d",inst->rdst,inst->rsrc1,(inst->imm&0x1f));
+            break;
+        case PISA_SRAV:
+            sprintf(buff,"srav $r%d, $r%d, $r%d",inst->rdst,inst->rsrc1,inst->rsrc2);
+            break;
+        case PISA_SLT:
+            sprintf(buff,"slt $r%d, $r%d, $r%d",inst->rdst,inst->rsrc1,inst->rsrc2);
+            break;
+        case PISA_SLTI:
+            sprintf(buff,"slti $r%d, $r%d, #%d",inst->rdst,inst->rsrc1,SEXT_IMM16(inst->imm));
+            break;
+        case PISA_SLTU:
+            sprintf(buff,"sltu $r%d, $r%d, $r%d",inst->rdst,inst->rsrc1,inst->rsrc2);
+            break;
+        case PISA_SLTIU:
+            sprintf(buff,"sltiu $r%d, $r%d, #%d",inst->rdst,inst->rsrc1,(inst->imm&0xffff));
+            break;
+        case PISA_ADD_S:
+            sprintf(buff,"add.s TODO");
+            break;
+        case PISA_ADD_D:
+            sprintf(buff,"add.d TODO");
+            break;
+        case PISA_SUB_S:
+            sprintf(buff,"sub.s TODO");
+            break;
+        case PISA_SUB_D:
+            sprintf(buff,"sub.d TODO");
+            break;
+        case PISA_MUL_S:
+            sprintf(buff,"mul.s TODO");
+            break;
+        case PISA_MUL_D:
+            sprintf(buff,"mul.d TODO");
+            break;
+        case PISA_DIV_S:
+            sprintf(buff,"div.s TODO");
+            break;
+        case PISA_DIV_D:
+            sprintf(buff,"div.d TODO");
+            break;
+        case PISA_ABS_S:
+            sprintf(buff,"abs.s TODO");
+            break;
+        case PISA_ABS_D:
+            sprintf(buff,"abs.d TODO");
+            break;
+        case PISA_MOV_S:
+            sprintf(buff,"mov.s TODO");
+            break;
+        case PISA_MOV_D:
+            sprintf(buff,"mov.d TODO");
+            break;
+        case PISA_NEG_S:
+            sprintf(buff,"neg.s TODO");
+            break;
+        case PISA_NEG_D:
+            sprintf(buff,"neg.d TODO");
+            break;
+        case PISA_CVT_S_D:
+            sprintf(buff,"cvt.s.d TODO");
+            break;
+        case PISA_CVT_S_W:
+            sprintf(buff,"cvt.s.w TODO");
+            break;
+        case PISA_CVT_D_S:
+            sprintf(buff,"cvt.d.s TODO");
+            break;
+        case PISA_CVT_D_W:
+            sprintf(buff,"cvt.d.w TODO");
+            break;
+        case PISA_CVT_W_S:
+            sprintf(buff,"cvt.w.s TODO");
+            break;
+        case PISA_CVT_W_D:
+            sprintf(buff,"cvt.w.d TODO");
+            break;
+        case PISA_C_EQ_S:
+            sprintf(buff,"c.eq.s TODO");
+            break;
+        case PISA_C_EQ_D:
+            sprintf(buff,"c.eq.d TODO");
+            break;
+        case PISA_C_LT_S:
+            sprintf(buff,"c.lt.s TODO");
+            break;
+        case PISA_C_LT_D:
+            sprintf(buff,"c.lt.d TODO");
+            break;
+        case PISA_C_LE_S:
+            sprintf(buff,"c.le.s TODO");
+            break;
+        case PISA_C_LE_D:
+            sprintf(buff,"c.le.d TODO");
+            break;
+        case PISA_SQRT_S:
+            sprintf(buff,"sqrt.s TODO");
+            break;
+        case PISA_SQRT_D:
+            sprintf(buff,"sqrt.d TODO");
+            break;
+        case PISA_NOP:
+            sprintf(buff,"nop");
+            break;
+        case PISA_SYSCALL:
+            sprintf(buff,"syscall");
+            break;
+        case PISA_BREAK:
+            sprintf(buff,"break");
+            break;
+        case PISA_LUI:
+            sprintf(buff,"lui $r%d, 0x%x",inst->rdst,(inst->imm&0xffff));
+            break;
+        case PISA_MFC1:
+            sprintf(buff,"mfc1 TODO");
+            break;
+        case PISA_MTC1:
+            sprintf(buff,"mtc1 TODO");
+            break;
+        case PISA_M1T_TRF:
+            sprintf(buff,"m1t_trf TODO");
+            break;
+        case PISA_M2T_TRF:
+            sprintf(buff,"m2t_trf TODO");
+            break;
+        case PISA_MF_TRF:
+            sprintf(buff,"mf_trf TODO");
+            break;
+        case PISA_BARRIER:
+            sprintf(buff,"barrier");
+            break;
+        case PISA_ERET:
+            sprintf(buff,"eret");
+            break;
+        case PISA_MIGRATE:
+            sprintf(buff,"migrate");
+            break;
+        default:
+            yyerror("bogus opcode when trying to print instruction asm");
+            break;
+    }
+}
+
+void print_memlist_info(){
     memblock_list_t *list = block_list;
 
     while (list){
@@ -273,7 +635,9 @@ void print_instructions(){
         printf("\nMem() block: 0x%08x:\n",list->min_address);
         while (working){
             if (working->type == ENTRY_INSTRUCTION){
-                printf("inst:  @0x%08x\t0x%010llx\n",working->address,working->encoding);
+                char buff[200];
+                sprint_asm(buff,working->inst);
+                printf("inst:  @0x%08x\t0x%010llx\t%s\n",working->address,working->encoding,buff);
             }
             else if (working->type == ENTRY_IDATA){
                 printf("idata: @0x%08x\t0x%x\n",working->address,working->ivalue);

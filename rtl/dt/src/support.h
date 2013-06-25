@@ -82,7 +82,7 @@ void check_scratchpad();
 void calculate_offsets();
 uint64_t encode_instruction(instruction_t *);
 void encode_instructions();
-void print_instructions();
+void print_memlist_info();
 
 void write_flat(char *);
 void write_fpga(char *, char *, char *);

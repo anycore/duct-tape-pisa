@@ -2518,7 +2518,7 @@ int main(int argc, char *argv[]){
         encode_instructions(); /* do the actual encoding of instructions */
 
         if (dump_debug){
-            print_instructions();
+            print_memlist_info();
             dump_symtab();
         }
 
