@@ -760,8 +760,14 @@ void fill_mem(char *err){
             mem_entry_t *working = list->head;
             while (working){
                 if (working->type == ENTRY_INSTRUCTION){
+                    // START DIRTY HACK
+                    uint32_t high_word = (uint32_t)((working->encoding >> 32) & 0xffffffff);
+                    uint32_t low_word =  (uint32_t)((working->encoding      ) & 0xffffffff);
+                    write_mem(working->address,   &(high_word), 4);
+                    write_mem(working->address+4, &( low_word), 4);
+                    // END DIRTY HACK
                     /* write to mem table */
-                    write_mem(working->address, &(working->encoding), 8);
+                    //write_mem(working->address, &(working->encoding), 8);
                 }
                 else if (working->type == ENTRY_IDATA){
                     /* write to mem table */
@@ -856,7 +862,10 @@ void write_fpga(char *mfile, char *pfile, char *rfile){
                 read_mem((addr+ 4), &word1, 4);
                 read_mem((addr+ 8), &word2, 4);
                 read_mem((addr+12), &word3, 4);
-                fprintf(mfd,"%08x%08x%08x%08x\n",word2,word3,word0,word1);
+                //fprintf(mfd,"%08x%08x%08x%08x\n",word2,word3,word0,word1);
+                // START DIRTY HACK
+                fprintf(mfd,"%08x%08x%08x%08x\n",word3,word2,word1,word0);
+                // END DIRTY HACK
             }
         }
     }
