@@ -1,0 +1,60 @@
+$pc = 0x00400000
+
+mem (0x00400000) {
+ii    : $r1
+icond : $r2
+stop  : $r3
+addr  : $r4
+val   : $r5
+vcond : $r6
+psum  : $r7
+nsum  : $r8
+
+    ii = #0
+    psum = #0
+    nsum = #0
+
+    addr = @array
+
+    stop = #20
+    icond = ii < stop
+    while (icond) { 
+        lw val, #0[addr]
+
+        vcond = val < #0
+        if (vcond) {
+            nsum = nsum + val
+        }
+        else {
+            psum = psum + val
+        }
+
+        addr = addr +#4
+
+        ii = ii + #1
+        icond = ii < stop
+    }
+}
+
+mem (0x10000000) {
+array : ! #1
+        ! #-1
+        ! #1
+        ! #-1
+        ! #1
+        ! #-1
+        ! #1
+        ! #-1
+        ! #1
+        ! #-1
+        ! #1
+        ! #-1
+        ! #1
+        ! #-1
+        ! #1
+        ! #-1
+        ! #1
+        ! #-1
+        ! #1
+        ! #-1
+}
