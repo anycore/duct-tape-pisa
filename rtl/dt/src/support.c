@@ -265,6 +265,72 @@ void check_scratchpad(){
         yyerror("Only two mem() blocks are allowed when using -scratchpad");
 }
 
+void check_h3(){
+    int num_lists = 0;
+    memblock_list_t *list = block_list;
+    unsigned int total_inst_size = 0;
+
+    while (list){
+        num_lists++;
+        if (list->min_address == 0x0){
+            mem_entry_t *working = list->head;
+            total_inst_size += (list->max_address - list->min_address);
+            if (list->max_address >= (0x0+(512*32))) /* 256*8 is the size of the I-cache in bytes */
+                yyerror("Instruction mem() block is larger than instruction cache");
+            while (working){
+                if ((working->type == ENTRY_IDATA) ||
+                    (working->type == ENTRY_FDATA))
+                    yyerror("Only instructions are allowed in the instruction mem() block when using -H3");
+                working = working->next;
+            }
+        }
+        else if (list->min_address == 0x1000){
+            mem_entry_t *working = list->head;
+            total_inst_size += (list->max_address - list->min_address);
+            if (list->max_address >= (0x1000+(512*32))) /* 256*8 is the size of the I-cache in bytes */
+                yyerror("Migration handler mem() block is larger than instruction cache");
+            while (working){
+                if ((working->type == ENTRY_IDATA) ||
+                    (working->type == ENTRY_FDATA))
+                    yyerror("Only instructions are allowed in the migration handler mem() block when using -H3");
+                working = working->next;
+            }
+        }
+        else if (list->min_address == 0x2000){
+            mem_entry_t *working = list->head;
+            total_inst_size += (list->max_address - list->min_address);
+            if (list->max_address >= (0x2000+(512*32))) /* 256*8 is the size of the I-cache in bytes */
+                yyerror("Resume handler mem() block is larger than instruction cache");
+            while (working){
+                if ((working->type == ENTRY_IDATA) ||
+                    (working->type == ENTRY_FDATA))
+                    yyerror("Only instructions are allowed in the resume handler mem() block when using -H3");
+                working = working->next;
+            }
+        }
+        else if (list->min_address == 0x500000){
+            mem_entry_t *working = list->head;
+            if (list->max_address >= (0x500000+(512*32))) /* 512*32 is the size of the D-cache in bytes */
+                yyerror("Data mem() block is larger than data cache");
+            while (working){
+                if ((working->type == ENTRY_INSTRUCTION) ||
+                    (working->type == ENTRY_PHI_NODE))
+                    yyerror("Only data is allowed in the data mem() block when using -H3");
+                working = working->next;
+            }
+        }
+        else {
+            yyerror("Bad mem() block address when using -H3");
+        }
+        list = list->next;
+    }
+
+    if (num_lists > 4)
+        yyerror("Only four mem() blocks are allowed when using -H3 (program kernel, migration handler, resume handler, data)");
+    if (total_inst_size >= (512*32))
+        yyerror("The sum of the instruction mem() block sizes is too large for instruction cache when using -H3");
+}
+
 #define SEXT_IMM18(x)    ((int32_t)(((x)&0x20000)?((x)|0xfffc0000):((x)&0x0003ffff)))
 #define SEXT_IMM16(x)    ((int32_t)(((x)&0x8000)?((x)|0xffff0000):((x)&0x0000ffff)))
 
@@ -604,13 +670,13 @@ void sprint_asm(char *buff, instruction_t *inst){
             sprintf(buff,"mtc1 TODO");
             break;
         case PISA_M1T_TRF:
-            sprintf(buff,"m1t_trf TODO");
+            sprintf(buff,"m1t_trf $t%d, $r%d",inst->rsrc1,inst->rsrc1);
             break;
         case PISA_M2T_TRF:
-            sprintf(buff,"m2t_trf TODO");
+            sprintf(buff,"m2t_trf $t%d, $t%d, $r%d, $r%d",inst->rsrc1,inst->rsrc2,inst->rsrc1,inst->rsrc2);
             break;
         case PISA_MF_TRF:
-            sprintf(buff,"mf_trf TODO");
+            sprintf(buff,"mf_trf $r%d, $t%d",inst->rdst,inst->rdst);
             break;
         case PISA_BARRIER:
             sprintf(buff,"barrier");
@@ -923,6 +989,41 @@ void write_scratchpads(char *ifile, char *dfile){
         }
         else {
             yyerror("Bad mem() block address when using -scratchpad");
+        }
+        list = list->next;
+    }
+}
+
+void write_h3(char *ifile, char *dfile){
+    memblock_list_t *list = block_list;
+
+    while (list){
+        if ((list->min_address == 0x0) || (list->min_address == 0x1000) || (list->min_address == 0x2000)){
+            mem_entry_t *working = list->head;
+            FILE *ifd = fopen(ifile,"w");
+            while (working){
+                if ((working->type == ENTRY_INSTRUCTION)/* ||
+                    (working->type == ENTRY_PHI_NODE)*/){
+                    fprintf(ifd,"%016llx\r\n",working->encoding);
+                }
+                working = working->next;
+            }
+            fclose(ifd);
+        }
+        else if (list->min_address == 0x500000){
+            mem_entry_t *working = list->head;
+            FILE *dfd = fopen(dfile,"w");
+            while (working){
+                if ((working->type == ENTRY_IDATA) ||
+                    (working->type == ENTRY_FDATA)){
+                    fprintf(dfd,"%08x\r\n",working->ivalue);
+                }
+                working = working->next;
+            }
+            fclose(dfd);
+        }
+        else {
+            yyerror("Bad mem() block address when using -H3");
         }
         list = list->next;
     }
@@ -1523,7 +1624,7 @@ uint64_t encode_instruction(instruction_t *inst){
             break;
         case PISA_M2T_TRF:
             encoding |= (inst->rsrc1<<24); /* rs */
-            encoding |= (inst->rsrc1);     /* ru */
+            encoding |= (inst->rsrc2);     /* ru */
             break;
         case PISA_MF_TRF:
             encoding |= (inst->rdst<<8);   /* rd */

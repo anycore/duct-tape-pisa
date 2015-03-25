@@ -1412,7 +1412,7 @@ inst: OP_J IIMM             {
                                 $$=(void*)entry;
                             }
     | validireg ASSIGN validireg MINUS IIMM {
-                                mem_entry_t *entry=new_instruction(PISA_ADDI); 
+                                mem_entry_t *entry=new_instruction(PISA_ADDIU); 
                                 entry->inst->rdst=$1; 
                                 entry->inst->rsrc1=$3; 
                                 entry->inst->imm=0-$5; 
@@ -1420,7 +1420,7 @@ inst: OP_J IIMM             {
                                 $$=(void*)entry;
                             }
     | validireg ASSIGN IIMM MINUS validireg {
-                                mem_entry_t *entry=new_instruction(PISA_ADDI); 
+                                mem_entry_t *entry=new_instruction(PISA_ADDIU); 
                                 entry->inst->rdst=$1; 
                                 entry->inst->rsrc1=$5; 
                                 entry->inst->imm=0-$3; 
@@ -1547,7 +1547,7 @@ inst: OP_J IIMM             {
                                         entry->inst->rdst=$1;
                                     }
                                     else {
-                                        entry=new_instruction(PISA_ADDI); 
+                                        entry=new_instruction(PISA_ADDIU); 
                                         entry->inst->rdst=$1; 
                                         entry->inst->rsrc1=$3; 
                                         entry->inst->imm=0;
@@ -1711,7 +1711,7 @@ inst: OP_J IIMM             {
                                 }
                                 else{
                                     /* only an ADDI */
-                                    entry=new_instruction(PISA_ADDI);
+                                    entry=new_instruction(PISA_ADDIU);
                                     entry->inst->rdst=$1;
                                     entry->inst->rsrc1=0; /* just addi to $r0 */
                                     entry->inst->imm=(~((uint32_t)$4));
@@ -2432,6 +2432,7 @@ int main(int argc, char *argv[]){
     BOOL flat_mem = FALSE;
     BOOL scratchpad_mem = FALSE;
     BOOL fpga_mem = FALSE;
+    BOOL h3_mem = FALSE;
     int input_file_count = 0;
     char *input_files[100];
     char *output_file;
@@ -2446,6 +2447,8 @@ int main(int argc, char *argv[]){
                 scratchpad_mem = TRUE;
             else if (strcmp(argv[i],"-fpga") == 0)
                 fpga_mem = TRUE;
+            else if (strcmp(argv[i],"-H3") == 0)
+                h3_mem = TRUE;
             else if (strcmp(argv[i],"-checking") == 0)
                 dump_debug = TRUE;
             else if (strcmp(argv[i],"-out") == 0){
@@ -2467,28 +2470,30 @@ int main(int argc, char *argv[]){
     }
 
     if (input_file_count == 0) valid_input = FALSE;
-    if (!(flat_mem || scratchpad_mem || fpga_mem)) flat_mem = TRUE;
+    if (!(flat_mem || scratchpad_mem || fpga_mem || h3_mem)) flat_mem = TRUE;
     if (!user_named_output) output_file = strdup("a");
 
     if (!valid_input){
         fprintf(stderr,"usage: %s [flags] <file...>\n\n",argv[0]);
         fprintf(stderr,"flags:\n");
-        fprintf(stderr,"       -flat            Output should be written to a\n");
-        fprintf(stderr,"                        checkpoint (non-debug cores).  This\n");
-        fprintf(stderr,"                        is the default.\n");
+        fprintf(stderr,"       -flat            Output should be written to a checkpoint\n");
+        fprintf(stderr,"                        file suitable for the 721sim-based functional\n");
+        fprintf(stderr,"                        simulator.  This is the default.\n");
         fprintf(stderr,"       -scratchpad      Output should be written to two files,\n");
         fprintf(stderr,"                        one for the I-scratchpad and one for the\n");
-        fprintf(stderr,"                        D-scratchpad (debug core) which can be read\n");
+        fprintf(stderr,"                        D-scratchpad (H3 debug core) which can be read\n");
         fprintf(stderr,"                        in the testbench using the readmemh function.\n");
         fprintf(stderr,"                        This option requires that you have mem blocks\n");
         fprintf(stderr,"                        with addresses in the range of 0-256 for the\n");
         fprintf(stderr,"                        I-scratchpad, and 1024-1280 for the D-scratchpad.\n");
         fprintf(stderr,"       -fpga            Output should be written to three files, \n");
-        fprintf(stderr,"                        in the format required by the fpga testbench,\n");
+        fprintf(stderr,"                        in the format required by the FabFPGA (not H3) testbench,\n");
         fprintf(stderr,"                        one file for mem, pc, and regs (which is always\n");
         fprintf(stderr,"                        zeros).\n");
+        fprintf(stderr,"       -H3              Output should be written to a checkpoint file, \n");
+        fprintf(stderr,"                        in the format required by the H3 host testbench.\n");
         fprintf(stderr,"       -out <file>      Output filenames will start with <file>.\n");
-        fprintf(stderr,"                        The default is \"a\".\n");
+        fprintf(stderr,"                        The default is \"a\" if -out is not used.\n");
         fprintf(stderr,"       -checking        Prints debug info (encodings, addresses, etc) \n");
         fprintf(stderr,"                        for parsed program to stdout.\n");
         exit(1);
@@ -2540,6 +2545,17 @@ int main(int argc, char *argv[]){
             free (mbuff);
             free (pbuff);
             free (rbuff);
+        }
+
+        if (h3_mem){
+            char *ibuff = (char*) malloc(sizeof(char)*1000);
+            char *dbuff = (char*) malloc(sizeof(char)*1000);
+            check_h3();
+            sprintf(ibuff,"%s.i.dat",output_file);
+            sprintf(dbuff,"%s.d.dat",output_file);
+            write_h3(ibuff,dbuff);
+            free (ibuff);
+            free (dbuff);
         }
 
         if (scratchpad_mem){
