@@ -240,5 +240,6 @@ void set_pc(uint32_t);
 #define PISA_BARRIER       0xf0
 #define PISA_ERET          0xef
 #define PISA_MIGRATE       0xed
+#define PISA_WAVE          0xec
 
 #endif

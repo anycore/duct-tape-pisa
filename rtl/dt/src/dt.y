@@ -55,7 +55,7 @@
 %token OP_MFC OP_MTC OP_RET
 
 %token OP_M1T_TRF OP_M2T_TRF OP_MF_TRF
-%token OP_BARRIER OP_ERET OP_MIGRATE
+%token OP_BARRIER OP_ERET OP_MIGRATE OP_WAVE
 
 %token MEMBLOCK IFBLOCK ELSEBLOCK WHILEBLOCK DOBLOCK UNTILBLOCK
 
@@ -2319,6 +2319,11 @@ inst: OP_J IIMM             {
                             }
     | OP_MIGRATE            {
                                 mem_entry_t *entry=new_instruction(PISA_MIGRATE);
+                                entry->status = ENTRY_COMPLETE;
+                                $$=(void*)entry;
+                            }
+    | OP_WAVE               {
+                                mem_entry_t *entry=new_instruction(PISA_WAVE);
                                 entry->status = ENTRY_COMPLETE;
                                 $$=(void*)entry;
                             }

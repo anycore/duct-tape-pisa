@@ -126,6 +126,7 @@ barrier                          {return OP_BARRIER;}
 trf_barrier                      {return OP_BARRIER;}
 eret                             {return OP_ERET;}
 migrate                          {return OP_MIGRATE;}
+wave                             {return OP_WAVE;}
 
 
   /* Operators */

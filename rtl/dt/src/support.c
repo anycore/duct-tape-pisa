@@ -687,6 +687,9 @@ void sprint_asm(char *buff, instruction_t *inst){
         case PISA_MIGRATE:
             sprintf(buff,"migrate");
             break;
+        case PISA_WAVE:
+            sprintf(buff,"wave");
+            break;
         default:
             yyerror("bogus opcode when trying to print instruction asm");
             break;
@@ -1634,6 +1637,8 @@ uint64_t encode_instruction(instruction_t *inst){
         case PISA_ERET:
             break;
         case PISA_MIGRATE:
+            break;
+        case PISA_WAVE:
             break;
         default:
             yyerror("Encountered an unknown opcode when encoding instructions.");
