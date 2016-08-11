@@ -235,7 +235,7 @@ void check_scratchpad(){
         num_lists++;
         if (list->min_address == 0x0){
             mem_entry_t *working = list->head;
-            if (list->max_address >= (0x0+(256*8))) /* 256*8 is the size of the I-scratchpad in bytes */
+            if (list->max_address >= (0x0+(1024*5))) /* 256*8 is the size of the I-scratchpad in bytes */
                 yyerror("Instruction mem() block is larger than instruction scratchpad");
             while (working){
                 if ((working->type == ENTRY_IDATA) ||
@@ -244,9 +244,9 @@ void check_scratchpad(){
                 working = working->next;
             }
         }
-        else if (list->min_address == 0x1000){
+        else if (list->min_address == 0x4000){
             mem_entry_t *working = list->head;
-            if (list->max_address >= (0x1000+(256*4))) /* 256*4 is the size of the D-scratchpad in bytes */
+            if (list->max_address >= (0x4000+(2048*4))) /* 256*4 is the size of the D-scratchpad in bytes */
                 yyerror("Data mem() block is larger than data scratchpad");
             while (working){
                 if ((working->type == ENTRY_INSTRUCTION) ||
@@ -256,6 +256,7 @@ void check_scratchpad(){
             }
         }
         else {
+            printf("mem() block address %x\n",list->min_address);
             yyerror("Bad mem() block address when using -scratchpad");
         }
         list = list->next;
@@ -959,20 +960,21 @@ void write_scratchpads(char *ifile, char *dfile){
             FILE *ifd = fopen(ifile,"w");
             int nentries = 0;
             while (working){
-                if ((working->type == ENTRY_INSTRUCTION) ||
-                    (working->type == ENTRY_PHI_NODE)){
+                //if ((working->type == ENTRY_INSTRUCTION) ||
+                //    (working->type == ENTRY_PHI_NODE)){
+                if (working->type == ENTRY_INSTRUCTION){
                     fprintf(ifd,"%010llx\n",working->encoding);
                 }
                 nentries++;
                 working = working->next;
             }
-            while (nentries < 256){
-                fprintf(ifd,"0000000000\n");
-                nentries++;
-            }
+            //while (nentries < 256){
+            //    fprintf(ifd,"0000000000\n");
+            //    nentries++;
+            //}
             fclose(ifd);
         }
-        else if (list->min_address == 0x1000){
+        else if (list->min_address == 0x4000){
             mem_entry_t *working = list->head;
             FILE *dfd = fopen(dfile,"w");
             int nentries = 0;
@@ -984,10 +986,10 @@ void write_scratchpads(char *ifile, char *dfile){
                 nentries++;
                 working = working->next;
             }
-            while (nentries < 256){
-                fprintf(dfd,"00000000\n");
-                nentries++;
-            }
+            //while (nentries < 256){
+            //    fprintf(dfd,"00000000\n");
+            //    nentries++;
+            //}
             fclose(dfd);
         }
         else {
